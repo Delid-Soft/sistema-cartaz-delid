@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Delid SaaS</title>
+<style>
+*{box-sizing:border-box;} body{font-family:'Segoe UI',Tahoma,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;}
+#loginBox{max-width:380px;margin:80px auto;background:#1e293b;padding:30px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.4);}
+#loginBox h2{margin-top:0;font-size:18px;}
+.grupo-input{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.grupo-input label{font-size:11px;text-transform:uppercase;color:#94a3b8;font-weight:700;}
+.grupo-input input{padding:9px 12px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:14px;}
+.btn{padding:10px;border:none;border-radius:6px;background:#7c3aed;color:#fff;font-weight:700;cursor:pointer;width:100%;}
+.btn:hover{background:#6d28d9;}
+.erro{color:#f87171;font-size:12px;min-height:16px;}
+
+#painelAdmin{display:none;padding:30px;max-width:1200px;margin:0 auto;}
+.topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;}
+.topo h1{font-size:20px;margin:0;}
+.btn-sair{background:#dc2626;padding:8px 16px;border-radius:6px;border:none;color:#fff;cursor:pointer;font-weight:700;}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px;}
+.card{background:#1e293b;padding:18px;border-radius:10px;text-align:center;}
+.card .num{font-size:26px;font-weight:900;color:#7c3aed;}
+.card .lbl{font-size:12px;color:#94a3b8;margin-top:4px;}
+table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:10px;overflow:hidden;font-size:13px;}
+th{background:#334155;padding:12px;text-align:left;}
+td{padding:12px;border-top:1px solid #334155;}
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge.ativo{background:#16a34a33;color:#4ade80;}
+.badge.inativo{background:#dc262633;color:#f87171;}
+.acoes button{margin-right:6px;padding:6px 10px;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;}
+.btn-bloquear{background:#dc2626;color:#fff;}
+.btn-ativar{background:#16a34a;color:#fff;}
+.btn-excluir{background:#334155;color:#fff;}
+select.plano-select{background:#0f172a;color:#fff;border:1px solid #334155;border-radius:5px;padding:4px;}
+</style>
+</head>
+<body>
+
+<div id="loginBox">
+    <h2>🔐 Painel Administrativo Delid</h2>
+    <div class="grupo-input"><label>Usuário Super Admin</label><input type="text" id="adminUser"></div>
+    <div class="grupo-input"><label>Senha</label><input type="password" id="adminPass"></div>
+    <div class="erro" id="adminErro"></div>
+    <button class="btn" onclick="loginAdmin()">Entrar</button>
+</div>
+
+<div id="painelAdmin">
+    <div class="topo">
+        <h1>📊 Painel Administrativo — Clientes SaaS</h1>
+        <button class="btn-sair" onclick="logoutAdmin()">Sair</button>
+    </div>
+    <div class="cards" id="cardsResumo"></div>
+    <table>
+        <thead><tr><th>Empresa</th><th>Plano</th><th>Usuários</th><th>Expira em</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="corpoTabelaEmpresas"></tbody>
+    </table>
+</div>
+
+<script>
+const API_URL = '/api';
+async function apiRequest(endpoint, method='GET', body=null){
+    const opts = { method, credentials:'include', headers:{} };
+    if(body){ opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
+    const resp = await fetch(API_URL+endpoint, opts);
+    const data = await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(data.error || 'Erro na requisição.');
+    return data;
+}
+
+async function loginAdmin(){
+    const username = document.getElementById('adminUser').value.trim();
+    const password = document.getElementById('adminPass').value;
+    const erro = document.getElementById('adminErro'); erro.innerText="";
+    try{
+        const data = await apiRequest('/auth/login','POST',{username,password});
+        if(data.usuario.role !== 'super_admin'){ erro.innerText = "Este usuário não é administrador do sistema."; return; }
+        document.getElementById('loginBox').style.display='none';
+        document.getElementById('painelAdmin').style.display='block';
+        carregarDashboard();
+    }catch(e){ erro.innerText = e.message; }
+}
+
+async function logoutAdmin(){
+    await apiRequest('/auth/logout','POST');
+    location.reload();
+}
+
+async function carregarDashboard(){
+    try{
+        const resumo = await apiRequest('/admin/dashboard');
+        document.getElementById('cardsResumo').innerHTML = `
+            <div class="card"><div class="num">${resumo.totalEmpresas}</div><div class="lbl">Empresas Cadastradas</div></div>
+            <div class="card"><div class="num">${resumo.totalAtivas}</div><div class="lbl">Empresas Ativas</div></div>
+            <div class="card"><div class="num">${resumo.totalUsuarios}</div><div class="lbl">Usuários Totais</div></div>
+            <div class="card"><div class="num">${resumo.porPlano.map(p=>p.plano+':'+p.qtd).join(' | ')}</div><div class="lbl">Por Plano</div></div>`;
+        carregarEmpresas();
+    }catch(e){ alert(e.message); }
+}
+
+async function carregarEmpresas(){
+    try{
+        const empresas = await apiRequest('/admin/empresas');
+        const tbody = document.getElementById('corpoTabelaEmpresas');
+        tbody.innerHTML = "";
+        empresas.forEach(e=>{
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${e.nome}</b></td>
+                <td>
+                    <select class="plano-select" onchange="alterarPlano(${e.id}, this.value)">
+                        <option value="trial" ${e.plano==='trial'?'selected':''}>Trial</option>
+                        <option value="basico" ${e.plano==='basico'?'selected':''}>Básico</option>
+                        <option value="pro" ${e.plano==='pro'?'selected':''}>Pro</option>
+                        <option value="admin" ${e.plano==='admin'?'selected':''}>Admin</option>
+                    </select>
+                </td>
+                <td>${e.total_usuarios}</td>
+                <td>${e.data_expiracao ? new Date(e.data_expiracao).toLocaleDateString('pt-BR') : '-'}</td>
+                <td><span class="badge ${e.ativo?'ativo':'inativo'}">${e.ativo?'Ativa':'Bloqueada'}</span></td>
+                <td class="acoes">
+                    ${e.ativo
+                        ? `<button class="btn-bloquear" onclick="alterarStatus(${e.id}, false)">Bloquear</button>`
+                        : `<button class="btn-ativar" onclick="alterarStatus(${e.id}, true)">Ativar</button>`}
+                    <button class="btn-excluir" onclick="excluirEmpresa(${e.id})">Excluir</button>
+                </td>`;
+            tbody.appendChild(tr);
+        });
+    }catch(e){ alert(e.message); }
+}
+
+async function alterarStatus(id, ativo){
+    try{ await apiRequest(`/admin/empresas/${id}/status`,'PUT',{ativo}); carregarEmpresas(); }
+    catch(e){ alert(e.message); }
+}
+
+async function alterarPlano(id, plano){
+    try{ await apiRequest(`/admin/empresas/${id}/plano`,'PUT',{plano}); }
+    catch(e){ alert(e.message); }
+}
+
+async function excluirEmpresa(id){
+    if(!confirm('Excluir esta empresa e TODOS os dados vinculados? Ação irreversível.')) return;
+    try{ await apiRequest(`/admin/empresas/${id}`,'DELETE'); carregarEmpresas(); }
+    catch(e){ alert(e.message); }
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Enter' && document.getElementById('loginBox').style.display!=='none') loginAdmin(); });
+</script>
+</body>
+</html>

@@ -1,52 +1,62 @@
+
 version: '3.8'
 
 services:
   postgres:
     image: postgres:16-alpine
     restart: always
-    env_file:
-      - ./backend/.env
     environment:
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - delid-net
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
     restart: always
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_ENV=production
+      - FRONTEND_URL=${FRONTEND_URL}
     depends_on:
-      - postgres
-    env_file:
-      - ./backend/.env
+      postgres:
+        condition: service_healthy
     volumes:
-      - uploads:/app/uploads
-    networks:
-      - delid-net
+      - uploads_data:/app/uploads
+    expose:
+      - "3000"
 
   nginx:
-    image: nginx:alpine
+    image: nginx:stable-alpine
     restart: always
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/letsencrypt
       - ./frontend:/usr/share/nginx/html
-      - uploads:/usr/share/nginx/html/uploads
+      - uploads_data:/usr/share/nginx/html/uploads
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
     depends_on:
       - backend
-    networks:
-      - delid-net
 
 volumes:
   pgdata:
-  uploads:
-
-networks:
-  delid-net:
+  uploads_data:
+  certbot_www:
+  certbot_conf:

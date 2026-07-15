@@ -1,958 +1,715 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Gerador de Cartaz - Delid Tecnologia</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI5MTIiIHJ4PSIzMiIgZmlsbD0iIzIyMjIyMiIvPgogIDxwYXRoIGQ9Ik0gMTQwIDEyMCBMIDMyMCAxMjAgQSAxMzAgMTMwIDAgMCAxIDQzMCAyNTAgQSAxMzAgMTMwIDAgMCAxIDMyMCAzODAgTCAyMDAgMzgwIEEgMzAgMzAgMCAwIDEgMTcwIDM1MCBMIDE3MCAyNTAgQSAyMCAzMCAwIDAgMSAyMDAgMjIwIEwgMjMwIDIyMCBBIDMwIDMwIDAgMCAxIDIzMCAyYjAgTCAyNjAgMjcwIEEgNDAgNDAgMCAwIDAgMzAwIDMxMCBBIDYwIDYwIDAgMCAwIDYwIDI1MCBBIDYwIDYwIDAgMCAwIDYwIDE5MCBMIDE4MCAxOTAgTCAxNDAgMTIwIFoiIGZpbGw9IiNmY2EzMTEiIC8+CiAgPHJlY3QgeD0iMTM1IiB5PSIyMjUiIHdpZHRoPSIyNSIgaGVpZ2h0PSIyNSIgcng9IjYiIGZpbGw9IiNmY2EzMTEiIC8+CiAgPHJlY3QgeD0iMTIxIiB5PSIyOTAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNyIgcng9IjQiIGZpbGw9IiNmY2EzMTEiIC8+CiAgPHJlY3QgeD0iODgiIHk9IjI1NiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiA0eD0iNiIgZmlsbD0iIzAwN2JmZiIgLz4KICA8cmVjdCB4PSIxMDUiIHk9IjMzMiIgd2lkdGg9IjE3IiBoZWlnaHQ9IjE3IiByeD0iNCIgZmlsbD0iIzAwN2JmZiIgLz4KPC9zdmc+">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Gerador de Cartaz - Delid Tecnologia</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:root{
+  --azul: #2563eb; --azul-escuro:#1d4ed8; --amarelo:#fca311; --cinza-bg:#eef2f7;
+  --texto:#1f2937; --borda:#e2e8f0; --verde:#16a34a; --vermelho:#dc2626;
+}
+body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; height:100vh;
+  background:linear-gradient(135deg,#1e293b,#334155); display:flex; justify-content:center; align-items:center; overflow:hidden; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #5555;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+#telaLoginContainer { display:flex; justify-content:center; align-items:center; width:100%; height:100%; position:fixed; top:0; left:0;
+  background:linear-gradient(135deg,#1e293b,#334155); z-index:9999; }
 
-        #telaLoginContainer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #5555;
-            z-index: 9999;
-        }
+.modal-login { width:800px; height:480px; background:#fff; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.4); display:flex; position:relative; overflow:hidden; }
+.btn-fechar { position:absolute; top:14px; right:16px; cursor:pointer; color:#94a3b8; font-size:18px; font-weight:bold; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:.15s; z-index:10;}
+.btn-fechar:hover { background:#f1f5f9; color:#334155; }
 
-        .modal-login {
-            width: 800px;
-            height: 480px;
-            background-color: #ffff;
-            border-radius: 4px;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.3);
-            display: flex;
-            position: relative;
-            overflow: hidden;
-        }
+.coluna-esquerda { width:38%; background:linear-gradient(160deg,#f8fafc,#e2e8f0); display:flex; flex-direction:column; justify-content:space-between; align-items:center; padding:40px 20px; text-align:center; border-right:1px solid #e2e8f0; }
+.txt-boas-vindas { font-size:16px; color:#334155; margin:0; font-weight:500; }
+.logo-delid-container { display:flex; flex-direction:column; align-items:flex-end; margin-bottom:20px; }
+.logo-delid-principal { display:flex; align-items:center; font-size:52px; font-weight:900; color:var(--amarelo); letter-spacing:-2px; line-height:1; }
+.detalhe-tech { display:inline-flex; flex-direction:column; gap:2px; margin-right:2px; font-size:12px; color:var(--azul); font-weight:bold; line-height:0.5; }
+.logo-subtexto { font-size:12px; font-weight:bold; color:#0f172a; margin-top:-2px; letter-spacing:0.5px; }
+.rodape-info-esquerda { font-size:13px; color:#475569; line-height:1.6; }
+.rodape-info-esquerda strong { display:block; margin-bottom:3px; color:#0f172a; }
+.rodape-info-esquerda a { color:var(--azul-escuro); text-decoration:none; }
 
-        .btn-fechar {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            cursor: pointer;
-            color: #777;
-            font-size: 16px;
-            font-weight: bold;
-        }
+.coluna-direita { width:62%; padding:45px 50px; display:flex; flex-direction:column; justify-content:center; }
+.titulo-formulario { font-size:18px; color:#0f172a; margin:0 0 25px 0; font-weight:600; }
+.painel-form { display:none; flex-direction:column; gap:16px; }
+.painel-form.ativo { display:flex; }
 
-        .coluna-esquerda {
-            width: 38%;
-            background-color: #dcdcdc;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 40px 20px;
-            text-align: center;
-            border-right: 1px solid #c8c8c8;
-        }
+.grupo-input { display:flex; flex-direction:column; gap:5px; }
+.grupo-input label { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.4px; }
+.grupo-input input, .grupo-input select { width:100%; padding:8px 12px; font-size:14px; border:1px solid #cbd5e1; background:#fff; outline:none; height:36px; border-radius:6px; transition:.15s; }
+.grupo-input input:focus, .grupo-input select:focus { border-color:var(--azul); box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+.msg-erro { color:var(--vermelho); font-size:12px; font-weight:600; min-height:16px; }
 
-        .txt-boas-vindas { font-size: 16px; color: #2222; margin: 0; font-weight: 500; }
+.bloco-botoes { display:flex; gap:10px; margin-top:12px; }
+.btn { flex:1; height:38px; border:none; font-size:13px; font-weight:600; cursor:pointer; border-radius:6px; transition:.15s; }
+.btn-confirmar { background:var(--azul); color:#fff; }
+.btn-confirmar:hover { background:var(--azul-escuro); }
+.btn-alternar { background:#e2e8f0; color:#334155; }
+.btn-alternar:hover { background:#cbd5e1; }
 
-        .logo-delid-container { display: flex; flex-direction: column; align-items: flex-end; margin-bottom: 20px; }
-        .logo-delid-principal { display: flex; align-items: center; font-size: 52px; font-weight: 900; color: #fca311; letter-spacing: -2px; line-height: 1; }
-        .detalhe-tech { display: inline-flex; flex-direction: column; gap: 2px; margin-right: 2px; font-size: 12px; color: #007bff; font-weight: bold; line-height: 0.5; }
-        .logo-subtexto { font-size: 12px; font-weight: bold; color: #0000; margin-top: -2px; letter-spacing: 0.5px; }
+#ambienteGerador { display:none; flex-direction:column; width:100vw; height:100vh; background:var(--cinza-bg); }
+.barra-superior-sistema { width:100%; height:58px; background:#fff; border-bottom:1px solid var(--borda); display:flex; justify-content:space-between; align-items:center; padding:0 25px; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,.04); }
+.titulo-modulo-sistema { font-size:16px; font-weight:700; color:#0f172a; }
+.container-perfil-usuario { position:relative; display:inline-block; }
+.btn-perfil-ativador { background:#f8fafc; border:1px solid #cbd5e1; padding:7px 14px; font-size:13px; font-weight:600; color:#334155; cursor:pointer; border-radius:6px; display:flex; align-items:center; gap:8px; }
+.btn-perfil-ativador:hover { background:#eef2f7; }
+.menu-suspenso-perfil { display:none; position:absolute; right:0; top:44px; background:#fff; min-width:230px; box-shadow:0 10px 30px rgba(0,0,0,.15); border:1px solid #e2e8f0; border-radius:8px; z-index:1000; padding:6px 0; }
+.menu-suspenso-perfil.aberto { display:block; }
+.item-menu-perfil { padding:10px 16px; font-size:13px; color:#334155; cursor:pointer; text-align:left; display:block; }
+.item-menu-perfil:hover { background:#f1f5f9; color:var(--azul); }
+.item-menu-perfil.separador { border-top:1px solid #eef2f7; margin-top:5px; padding-top:10px; color:var(--vermelho); }
+.item-menu-perfil.separador:hover { background:#fef2f2; color:#b91c1c; }
 
-        .rodape-info-esquerda { font-size: 13px; color: #3333; line-height: 1.6; }
-        .rodape-info-esquerda strong { display: block; margin-bottom: 3px; color: #000; }
-        .rodape-info-esquerda a { color: #0056b3; text-decoration: none; }
+.conteudo-principal-gerador { display:flex; flex:1; padding:20px; gap:25px; overflow:hidden; width:100%; height:calc(100vh - 58px); }
+.painel-gerador { width:420px; background:#fff; padding:20px; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.06); display:flex; flex-direction:column; gap:15px; overflow-y:auto; height:100%; flex-shrink:0; }
+.painel-gerador h3 { margin:0 0 5px 0; color:#0f172a; border-bottom:2px solid #f1f5f9; padding-bottom:6px; font-size:15px; font-weight:700; }
 
-        .coluna-direita { width: 62%; padding: 45px 50px; display: flex; flex-direction: column; justify-content: center; }
-        .titulo-formulario { font-size: 18px; color: #1111; margin: 0 0 25px 0; font-weight: 500; }
+button.acao { flex:1; padding:12px; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:.15s; }
+.btn-add { background:var(--azul); color:#fff; } .btn-add:hover { background:var(--azul-escuro); }
+.btn-print { background:var(--verde); color:#fff; } .btn-print:hover { background:#15803d; }
+.btn-clear { background:var(--vermelho); color:#fff; } .btn-clear:hover { background:#b91c1c; }
+.btn-whatsapp { background:#25d366; color:#fff; } .btn-whatsapp:hover { background:#1ebd59; }
+.btn-save { background:#7c3aed; color:#fff; } .btn-save:hover { background:#6d28d9; }
 
-        .painel-form { display: none; flex-direction: column; gap: 16px; }
-        .painel-form.ativo { display: flex; }
+.container-tabela { margin-top:5px; border:1px solid #f1f5f9; border-radius:8px; overflow:hidden; }
+table { width:100%; border-collapse:collapse; font-size:13px; text-align:left; }
+th { background:#f8fafc; padding:10px; color:#64748b; font-weight:700; }
+td { padding:10px; border-top:1px solid #f1f5f9; }
+.btn-deletar { background:none; border:none; color:var(--vermelho); cursor:pointer; font-size:16px; padding:0; }
 
-        .grupo-input { display: flex; flex-direction: column; gap: 5px; }
-        .grupo-input label { font-size: 11px; font-weight: bold; color: #0000; text-transform: uppercase; }
-        .grupo-input input, .grupo-input select { width: 100%; padding: 6px 10px; font-size: 14px; border: 1px solid #a0a0a0; background-color: #ffff; outline: none; height: 32px; }
+.preview-container { flex:1; background:#cbd5e1; border-radius:14px; overflow-y:auto; padding:20px; display:flex; flex-direction:column; align-items:center; gap:20px; }
 
-        .bloco-botoes { display: flex; gap: 10px; margin-top: 12px; }
-        .btn { flex: 1; height: 36px; border: 1px solid #707070; font-size: 13px; cursor: pointer; }
-        .btn-confirmar { background-color: #4d4d4d; color: #ffff; }
-        .btn-confirmar:hover { background-color: #3333; }
-        .btn-alternar { background-color: #e1e1e1; color: #0000; }
-        .btn-alternar:hover { background-color: #d0d0d0; }
+.dimensao-A4 { width:210mm; height:297mm; min-height:297mm; position:relative; }
+.dimensao-A5 { width:148mm; height:210mm; min-height:210mm; position:relative; }
+.dimensao-A6 { width:105mm; height:148mm; min-height:148mm; position:relative; }
 
-        #ambienteGerador {
-            display: none;
-            flex-direction: column;
-            width: 100vw;
-            height: 100vh;
-            background-color: #eef2f3;
-        }
+.cartaz-individual { background-color:#ffcc00; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-transform:uppercase; box-shadow:0 10px 30px rgba(0,0,0,.15); padding:30px; overflow:hidden; flex-shrink:0; }
+.cartaz-individual.modelo-tradicional { background-color:#ffcc00; border:15px solid #d32f2f; }
+.modelo-tradicional .bloco-preco { color:#d32f2f; }
+.modelo-tradicional .topo-simulado { background-color:#d32f2f; color:#fff; }
+.cartaz-individual.modelo-clean { background-color:#fff; border:12px solid #333; }
+.modelo-clean .bloco-preco { color:#000; }
+.modelo-clean .nome-produto { color:#111; }
+.modelo-clean .topo-simulado { background-color:#333; color:#fff; }
+.cartaz-individual.modelo-premium { background-color:#1a1a1a; border:12px solid #d4af37; }
+.modelo-premium .nome-produto { color:#fff; }
+.modelo-premium .cifrao, .modelo-premium .unidade-medida { color:#d4af37; }
+.modelo-premium .bloco-preco { color:#fff; }
+.modelo-premium .topo-simulado { background-color:#d4af37; color:#1a1a1a; }
+.cartaz-individual.modelo-customizado { background-size:100% 100%; background-repeat:no-repeat; background-color:#fff; border:none !important; }
+.modelo-customizado .topo-simulado { display:none !important; }
+.cartaz-individual .topo-simulado { width:calc(100% + 60px); font-weight:900; font-size:45px; padding:15px 0; text-align:center; margin-top:-30px; letter-spacing:2px; font-family:'Arial Black', sans-serif; }
+.cartaz-individual .nome-produto { font-family:'Arial Black', Impact, sans-serif; font-weight:900; color:#000; line-height:1.0; width:100%; text-align:center; word-wrap:break-word; letter-spacing:-1px; margin-top:20px; }
+.cartaz-individual .container-inferior-bloco { width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.cartaz-individual .area-preco-container { display:flex; justify-content:center; align-items:flex-start; }
+.cartaz-individual .cifrao { font-family:'Arial Black', sans-serif; font-weight:900; color:#000; margin-right:8px; margin-top:15px; }
+.cartaz-individual .bloco-preco { display:inline-flex; align-items:flex-start; font-family:'Arial Black', Impact, sans-serif; }
+.cartaz-individual .preco-reais { font-weight:900; line-height:0.8; letter-spacing:-4px; }
+.cartaz-individual .preco-centavos { font-weight:900; line-height:0.75; margin-left:2px; }
+.cartaz-individual .unidade-medida { font-family:'Arial Black', sans-serif; font-weight:900; color:#000; margin-top:10px; text-align:center; text-transform:uppercase; }
 
-        .barra-superior-sistema {
-            width: 100%;
-            height: 55px;
-            background-color: #ffff;
-            border-bottom: 1px solid #dcdcdc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 25px;
-            flex-shrink: 0;
-        }
+.encarte-base { background-color:#ffcc00; display:flex; flex-direction:column; padding:0; flex-shrink:0; box-shadow:0 10px 30px rgba(0,0,0,.15); overflow:hidden; border:4px solid #ffcc00; }
+.encarte-header-tema { background-color:#111; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; width:100%; border-bottom:6px solid #d32f2f; height:95px; }
+.encarte-header-tema .titulo-ofertas h1 { margin:0; font-size:28px; font-weight:900; color:#fff; letter-spacing:-1px; text-transform:uppercase; font-family:'Arial Black', sans-serif; }
+.encarte-header-tema .titulo-ofertas span { font-size:14px; background:#d32f2f; color:#fff; padding:1px 6px; font-weight:bold; border-radius:3px; display:inline-block; margin-top:2px; }
+.encarte-header-tema .box-logo-mockup { background:#fff; border:4px solid #ffcc00; border-radius:12px; width:150px; height:70px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; overflow:hidden; }
+.encarte-header-tema .box-logo-mockup strong { font-size:15px; color:#000; font-weight:900; }
+.encarte-header-tema .box-logo-mockup img { max-width:100%; max-height:100%; object-fit:contain; }
+.grid-container-tema { display:grid; grid-template-columns:1.1fr 2fr; gap:4px; flex:1; width:100%; background-color:#d32f2f; padding:4px; height:calc(100% - 110px); }
+.coluna-destaque-unica { background-color:#d32f2f; display:flex; flex-direction:column; justify-content:space-between; padding:12px; color:white; text-align:center; position:relative; }
+.coluna-destaque-unica .destaque-nome { font-family:'Arial Black', sans-serif; font-size:26px; font-weight:900; text-transform:uppercase; line-height:1.1; margin-bottom:10px; }
+.coluna-destaque-unica img { max-height:180px; object-fit:contain; width:100%; transition:transform .1s; }
+.grade-secundaria-itens { display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; background-color:#d32f2f; }
+.card-produto-tema { background-color:#ffcc00; border:2px solid #d32f2f; padding:6px; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; }
+.card-produto-tema .prod-nome { font-family:'Arial Black', sans-serif; font-weight:900; font-size:11px; color:#000; text-transform:uppercase; }
+.card-produto-tema img { max-height:65px; object-fit:contain; max-width:95%; }
+.etiqueta-preco-container { width:100%; background:#222; border-radius:6px; padding:3px; color:#fff; display:flex; flex-direction:column; align-items:center; font-family:'Arial Black', sans-serif; }
+.etiqueta-preco-container .val-real { font-size:16px; font-weight:900; color:#fff; }
+.coluna-destaque-unica .etiqueta-preco-container { background:#fff; color:#000; padding:6px; }
+.coluna-destaque-unica .etiqueta-preco-container .val-real { color:#000; font-size:32px; }
+.container-rodape-etiqueta { position:absolute; bottom:3px; left:0; width:100%; display:flex; flex-direction:column; align-items:center; background-color:transparent !important; pointer-events:none; gap:1px; }
+.txt-validade-promocao { font-family:'Arial Black', sans-serif; font-weight:900; color:#000; width:100%; text-align:center; text-transform:uppercase; line-height:1; }
+.modelo-premium .txt-validade-promocao { color:#d4af37; }
+.rodape-tecnico-delid { width:100%; color:rgba(0,0,0,.35); text-align:center; font-size:9px; font-family:Arial, sans-serif; line-height:1; }
+.modelo-premium .rodape-tecnico-delid { color:rgba(255,255,255,.25); }
+.grid-modelo-tradicional { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; flex:1; width:100%; }
 
-        .titulo-modulo-sistema { font-size: 16px; font-weight: 600; color: #333; }
-        .container-perfil-usuario { position: relative; display: inline-block; }
+.modal-config-fundo { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(15,23,42,.55); z-index:5000; justify-content:center; align-items:center; }
+.modal-config-fundo.aberto { display:flex; }
+.conteudo-modal-config { background:#fff; width:500px; border-radius:12px; padding:25px; box-shadow:0 10px 40px rgba(0,0,0,.3); position:relative; }
+.conteudo-modal-config h2 { margin:0 0 12px 0; font-size:17px; color:#0f172a; border-bottom:1px solid #f1f5f9; padding-bottom:10px; padding-right:25px; }
+.botoes-alinhados-modal { display:flex; gap:10px; margin-top:20px; justify-content:flex-end; }
+.modal-btn-fechar { position:absolute; top:14px; right:16px; cursor:pointer; color:#94a3b8; font-size:18px; font-weight:bold; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:.15s; }
+.modal-btn-fechar:hover { background:#f1f5f9; color:#334155; }
 
-        .btn-perfil-ativador {
-            background-color: #f5f7fa; border: 1px solid #cccc; padding: 6px 14px;
-            font-size: 13px; font-weight: 600; color: #333; cursor: pointer; border-radius: 4px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .btn-perfil-ativador:hover { background-color: #eef2f3; }
+.toast { position:fixed; top:20px; right:20px; background:#0f172a; color:#fff; padding:14px 18px; border-radius:8px; font-size:13px; font-weight:600; box-shadow:0 8px 24px rgba(0,0,0,.25); z-index:9999; display:flex; align-items:center; gap:10px; animation:slideIn .25s ease; }
+.toast.erro { background:var(--vermelho); }
+.toast.sucesso { background:var(--verde); }
+@keyframes slideIn { from { transform:translateX(30px); opacity:0; } to { transform:translateX(0); opacity:1; } }
 
-        .menu-suspenso-perfil {
-            display: none; position: absolute; right: 0; top: 40px; background-color: #ffff;
-            min-width: 220px; box-shadow: 0px 8px 24px rgba(0,0,0,0.15); border: 1px solid #dddd;
-            border-radius: 4px; z-index: 1000; padding: 6px 0;
-        }
-        .menu-suspenso-perfil.aberto { display: block; }
-
-        .item-menu-perfil { padding: 10px 16px; font-size: 13px; color: #3333; cursor: pointer; text-align: left; display: block; }
-        .item-menu-perfil:hover { background-color: #f5f7fa; color: #007bff; }
-        .item-menu-perfil.separador { border-top: 1px solid #eeee; margin-top: 5px; padding-top: 10px; color: #d9534f; }
-        .item-menu-perfil.separador:hover { background-color: #fdf2f2; color: #c9302c; }
-
-        .conteudo-principal-gerador { display: flex; flex: 1; padding: 20px; gap: 25px; overflow: hidden; width: 100%; height: calc(100vh - 55px); }
-
-        .painel-gerador {
-            width: 420px; background: white; padding: 20px; border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05); display: flex; flex-direction: column;
-            gap: 15px; overflow-y: auto; height: 100%; flex-shrink: 0;
-        }
-
-        .painel-gerador h3 { margin: 0 0 5px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; font-size: 16px; }
-
-        button.acao { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .btn-add { background: #007bff; color: white; }
-        .btn-add:hover { background: #0056b3; }
-        .btn-print { background: #2ecc71; color: white; }
-        .btn-print:hover { background: #27ae60; }
-        .btn-clear { background: #e74c3c; color: white; }
-        .btn-clear:hover { background: #c0392b; }
-        .btn-whatsapp { background: #25d366; color: white; }
-        .btn-whatsapp:hover { background: #1ebd59; }
-        .btn-save { background: #6f42c1; color: white; }
-        .btn-save:hover { background: #59339d; }
-
-        .container-tabela { margin-top: 5px; border: 1px solid #eee; border-radius: 6px; overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-        th { background: #f5f7fa; padding: 10px; color: #666; }
-        td { padding: 10px; border-top: 1px solid #eee; }
-        .btn-deletar { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 16px; padding: 0; }
-
-        .preview-container { flex: 1; background: #cbd5e1; border-radius: 12px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-
-        .dimensao-A4 { width: 210mm; height: 297mm; min-height: 297mm; position: relative; }
-        .dimensao-A5 { width: 148mm; height: 210mm; min-height: 210mm; position: relative; }
-        .dimensao-A6 { width: 105mm; height: 148mm; min-height: 148mm; position: relative; }
-
-        .cartaz-individual { background-color: #ffcc00; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 30px; overflow: hidden; flex-shrink: 0; }
-        .cartaz-individual.modelo-tradicional { background-color: #ffcc00; border: 15px solid #d32f2f; }
-        .modelo-tradicional .bloco-preco { color: #d32f2f; }
-        .modelo-tradicional .topo-simulado { background-color: #d32f2f; color: #fff; }
-
-        .cartaz-individual.modelo-clean { background-color: #ffff; border: 12px solid #3333; }
-        .modelo-clean .bloco-preco { color: #0000; }
-        .modelo-clean .nome-produto { color: #111; }
-        .modelo-clean .topo-simulado { background-color: #3333; color: #fff; }
-
-        .cartaz-individual.modelo-premium { background-color: #1a1a1a; border: 12px solid #d4af37; }
-        .modelo-premium .nome-produto { color: #ffff; }
-        .modelo-premium .cifrao, .modelo-premium .unidade-medida { color: #d4af37; }
-        .modelo-premium .bloco-preco { color: #fff; }
-        .modelo-premium .topo-simulado { background-color: #d4af37; color: #1a1a1a; }
-
-        .cartaz-individual.modelo-customizado { background-size: 100% 100%; background-repeat: no-repeat; background-color: #ffff; border: none !important; }
-        .modelo-customizado .topo-simulado { display: none !important; }
-
-        .cartaz-individual .topo-simulado { width: calc(100% + 60px); font-weight: 900; font-size: 45px; padding: 15px 0; text-align: center; margin-top: -30px; letter-spacing: 2px; font-family: 'Arial Black', sans-serif; }
-        .cartaz-individual .nome-produto { font-family: 'Arial Black', Impact, sans-serif; font-weight: 900; color: #000; line-height: 1.0; width: 100%; text-align: center; word-wrap: break-word; letter-spacing: -1px; margin-top: 20px; }
-        .cartaz-individual .container-inferior-bloco { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .cartaz-individual .area-preco-container { display: flex; justify-content: center; align-items: flex-start; }
-        .cartaz-individual .cifrao { font-family: 'Arial Black', sans-serif; font-weight: 900; color: #000; margin-right: 8px; margin-top: 15px; }
-        .cartaz-individual .bloco-preco { display: inline-flex; align-items: flex-start; font-family: 'Arial Black', Impact, sans-serif; }
-        .cartaz-individual .preco-reais { font-weight: 900; line-height: 0.8; letter-spacing: -4px; }
-        .cartaz-individual .preco-centavos { font-weight: 900; line-height: 0.75; margin-left: 2px; }
-        .cartaz-individual .unidade-medida { font-family: 'Arial Black', sans-serif; font-weight: 900; color: #000; margin-top: 10px; text-align: center; text-transform: uppercase; }
-
-        .encarte-base { background-color: #ffcc00; display: flex; flex-direction: column; padding: 0; flex-shrink: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; border: 4px solid #ffcc00; }
-        .encarte-header-tema { background-color: #1111; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 6px solid #d32f2f; height: 95px; }
-        .encarte-header-tema .titulo-ofertas h1 { margin: 0; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -1px; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
-        .encarte-header-tema .titulo-ofertas span { font-size: 14px; background: #d32f2f; color: #fff; padding: 1px 6px; font-weight: bold; border-radius: 3px; display: inline-block; margin-top: 2px; }
-        .encarte-header-tema .box-logo-mockup { background: #ffff; border: 4px solid #ffcc00; border-radius: 12px; width: 150px; height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden; }
-        .encarte-header-tema .box-logo-mockup strong { font-size: 15px; color: #000; font-weight: 900; }
-        .encarte-header-tema .box-logo-mockup img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-        .grid-container-tema { display: grid; grid-template-columns: 1.1fr 2fr; gap: 4px; flex: 1; width: 100%; background-color: #d32f2f; padding: 4px; height: calc(100% - 110px); }
-        .coluna-destaque-unica { background-color: #d32f2f; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; color: white; text-align: center; position: relative; }
-        .coluna-destaque-unica .destaque-nome { font-family: 'Arial Black', sans-serif; font-size: 26px; font-weight: 900; text-transform: uppercase; line-height: 1.1; margin-bottom: 10px; }
-        .coluna-destaque-unica img { max-height: 180px; object-fit: contain; width: 100%; transition: transform 0.1s; }
-
-        .grade-secundaria-itens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; background-color: #d32f2f; }
-        .card-produto-tema { background-color: #ffcc00; border: 2px solid #d32f2f; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
-        .card-produto-tema .prod-nome { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 11px; color: #000; text-transform: uppercase; }
-        .card-produto-tema img { max-height: 65px; object-fit: contain; max-width: 95%; }
-
-        .etiqueta-preco-container { width: 100%; background: #222; border-radius: 6px; padding: 3px; color: #fff; display: flex; flex-direction: column; align-items: center; font-family: 'Arial Black', sans-serif; }
-        .etiqueta-preco-container .val-real { font-size: 16px; font-weight: 900; color: #fff; }
-        .coluna-destaque-unica .etiqueta-preco-container { background: #fff; color: #000; padding: 6px; }
-        .coluna-destaque-unica .etiqueta-preco-container .val-real { color: #000; font-size: 32px; }
-
-        .container-rodape-etiqueta { position: absolute; bottom: 3px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: transparent !important; pointer-events: none; gap: 1px; }
-        .txt-validade-promocao { font-family: 'Arial Black', sans-serif; font-weight: 900; color: #0000; width: 100%; text-align: center; text-transform: uppercase; line-height: 1; }
-        .modelo-premium .txt-validade-promocao { color: #d4af37; }
-
-        .rodape-tecnico-delid { width: 100%; color: rgba(0, 0, 0, 0.35); text-align: center; font-size: 9px; font-family: Arial, sans-serif; line-height: 1; }
-        .modelo-premium .rodape-tecnico-delid { color: rgba(255, 255, 255, 0.25); }
-
-        .grid-modelo-tradicional { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; flex: 1; width: 100%; }
-
-        .modal-config-fundo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 5000; justify-content: center; align-items: center; }
-        .modal-config-fundo.aberto { display: flex; }
-        .conteudo-modal-config { background-color: #ffff; width: 500px; border-radius: 6px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; }
-        .conteudo-modal-config h2 { margin-top: 0; font-size: 18px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .botoes-alinhados-modal { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-
-        @media print {
-            @page { margin: 0; size: portrait; }
-            html, body { background: none !important; margin: 0 !important; padding: 0 !important; height: auto !important; width: 100% !important; overflow: visible !important; }
-            #telaLoginContainer, .barra-superior-sistema, .modal-config-fundo { display: none !important; }
-            #ambienteGerador { display: block !important; background: none !important; padding: 0 !important; }
-            .painel-gerador { display: none !important; }
-            .conteudo-principal-gerador { padding: 0 !important; display: block !important; height: auto !important; }
-            .preview-container { background: none !important; padding: 0 !important; display: block !important; width: 100% !important; }
-            .cartaz-individual { page-break-after: always; page-break-inside: avoid; margin: 0 auto !important; box-shadow: none !important; display: flex !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .cartaz-individual.modelo-tradicional { background-color: transparent !important; border: none !important; }
-            .cartaz-individual.modelo-tradicional .topo-simulado { display: none !important; }
-            .cartaz-individual.modelo-tradicional .nome-produto { margin-top: 80mm !important; }
-            .encarte-base { page-break-after: always; page-break-inside: avoid; margin: 0 auto !important; box-shadow: none !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; display: flex !important; }
-            .rodape-tecnico-delid { color: rgba(0, 0, 0, 0.4) !important; }
-        }
-    </style>
+@media print {
+    @page { margin:0; size:portrait; }
+    html, body { background:none !important; margin:0 !important; padding:0 !important; height:auto !important; width:100% !important; overflow:visible !important; }
+    #telaLoginContainer, .barra-superior-sistema, .modal-config-fundo { display:none !important; }
+    #ambienteGerador { display:block !important; background:none !important; padding:0 !important; }
+    .painel-gerador { display:none !important; }
+    .conteudo-principal-gerador { padding:0 !important; display:block !important; height:auto !important; }
+    .preview-container { background:none !important; padding:0 !important; display:block !important; width:100% !important; }
+    .cartaz-individual { page-break-after:always; page-break-inside:avoid; margin:0 auto !important; box-shadow:none !important; display:flex !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+    .cartaz-individual.modelo-tradicional { background-color:transparent !important; border:none !important; }
+    .cartaz-individual.modelo-tradicional .topo-simulado { display:none !important; }
+    .cartaz-individual.modelo-tradicional .nome-produto { margin-top:80mm !important; }
+    .encarte-base { page-break-after:always; page-break-inside:avoid; margin:0 auto !important; box-shadow:none !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; display:flex !important; }
+    .rodape-tecnico-delid { color:rgba(0,0,0,.4) !important; }
+}
+</style>
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
-    <div id="telaLoginContainer">
-        <div class="modal-login">
-            <div class="btn-fechar">✕</div>
-
-            <div class="coluna-esquerda">
-                <p class="txt-boas-vindas">Bem-vindo ao Sistema</p>
-                <div class="logo-delid-container">
-                    <div class="logo-delid-principal"><span class="detalhe-tech">▪▪<br>▪</span>Delid</div>
-                    <div class="logo-subtexto">Tecnologia</div>
-                </div>
-                <div class="rodape-info-esquerda">
-                    <strong>v2.0.0</strong>
-                    Reforma Tributária 2026<br>
-                    <a href="https://delid.com.br/lp/" target="_blank">www.delid.com.br/lp/</a>
+<div id="telaLoginContainer">
+    <div class="modal-login">
+        <div class="btn-fechar" title="Fechar" onclick="if(confirm('Fechar o sistema?')) window.close();">✕</div>
+        <div class="coluna-esquerda">
+            <p class="txt-boas-vindas">Bem-vindo ao Sistema</p>
+            <div class="logo-delid-container">
+                <div class="logo-delid-principal"><span class="detalhe-tech">▪▪<br>▪</span>Delid</div>
+                <div class="logo-subtexto">Tecnologia</div>
+            </div>
+            <div class="rodape-info-esquerda">
+                <strong>v2.0.0</strong>
+                Reforma Tributária 2026<br>
+                <a href="https://delid.com.br/lp/" target="_blank">www.delid.com.br/lp/</a>
+            </div>
+        </div>
+        <div class="coluna-direita">
+            <div id="formLogin" class="painel-form ativo">
+                <h2 class="titulo-formulario">Digite seu Usuário e sua Senha:</h2>
+                <div class="grupo-input"><label>Login / Usuário</label><input type="text" id="loginUsuario" placeholder="Usuário" autocomplete="username"></div>
+                <div class="grupo-input"><label>Senha</label><input type="password" id="loginSenha" placeholder="••••" autocomplete="current-password"></div>
+                <div class="msg-erro" id="erroLogin"></div>
+                <div class="bloco-botoes">
+                    <button type="button" class="btn btn-confirmar" onclick="executarLogin()">Entrar (Enter)</button>
+                    <button type="button" class="btn btn-alternar" onclick="alternarFormularios('cadastro')">Criar Conta</button>
                 </div>
             </div>
-
-            <div class="coluna-direita">
-                <div id="formLogin" class="painel-form ativo">
-                    <h2 class="titulo-formulario">Digite seu Usuário e sua Senha:</h2>
-                    <div class="grupo-input">
-                    <label>Login / Usuário</label>
-                    <input type="text" id="loginUsuario" placeholder="Usuário">
-                    </div>
-                    <div class="grupo-input">
-                    <label>Senha</label>
-                    <input type="password" id="loginSenha" placeholder="••••">
-                    </div>
-                    <div class="bloco-botoes">
-                    <button type="button" class="btn btn-confirmar" onclick="executarLogin()">Confirma (Enter)</button>
-                    <button type="button" class="btn btn-alternar" onclick="alternarFormularios('cadastro')">Criar Conta</button>
-                    </div>
-                </div>
-
-                <div id="formCadastro" class="painel-form">
-                    <h2 class="titulo-formulario">Cadastre seu novo Usuário de Acesso:</h2>
-                    <div class="grupo-input">
-                    <label>Nome da Empresa / Loja</label>
-                    <input type="text" id="cadNomeEmpresa" placeholder="Ex: Mercado MS">
-                    </div>
-                    <div class="grupo-input">
-                    <label>Defina seu Usuário de Login</label>
-                    <input type="text" id="cadUsuario" placeholder="Ex: ADM">
-                    </div>
-                    <div class="grupo-input">
-                    <label>Crie uma Senha</label>
-                    <input type="password" id="cadSenha" placeholder="Senha">
-                    </div>
-                    <div class="bloco-botoes">
+            <div id="formCadastro" class="painel-form">
+                <h2 class="titulo-formulario">Cadastre seu novo Usuário de Acesso:</h2>
+                <div class="grupo-input"><label>Nome da Empresa / Loja</label><input type="text" id="cadNomeEmpresa" placeholder="Ex: Mercado MS"></div>
+                <div class="grupo-input"><label>Defina seu Usuário de Login</label><input type="text" id="cadUsuario" placeholder="Ex: adm_mercado"></div>
+                <div class="grupo-input"><label>Crie uma Senha (mín. 8 caracteres)</label><input type="password" id="cadSenha" placeholder="Senha"></div>
+                <div class="msg-erro" id="erroCadastro"></div>
+                <div class="bloco-botoes">
                     <button type="button" class="btn btn-confirmar" onclick="salvarNovoUsuario()">Salvar Cadastro</button>
                     <button type="button" class="btn btn-alternar" onclick="alternarFormularios('login')">Voltar</button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- AMBIENTE GERADOR -->
-    <div id="ambienteGerador">
-        <div class="barra-superior-sistema">
-            <div class="titulo-modulo-sistema">📈 Módulo Gerador de Cartazes Profissionais</div>
-            <div class="container-perfil-usuario">
-                <button class="btn-perfil-ativador" onclick="alternarMenuPerfilDropdown()">
-                    👤 <span id="labelNomeEmpresaLogada">Minha Empresa</span> ▾
-                </button>
-                <div class="menu-suspenso-perfil" id="dropdownPerfil">
-                    <div class="item-menu-perfil" onclick="abrirModalConfig('empresa')">🏢 Dados da Empresa</div>
-                    <div class="item-menu-perfil" onclick="abrirModalConfig('filiais')">🌿 Gerenciar Filiais / Usuários</div>
-                    <div class="item-menu-perfil separador" onclick="efetuarLogoff()">🚪 Sair do Sistema</div>
-                </div>
+<div id="ambienteGerador">
+    <div class="barra-superior-sistema">
+        <div class="titulo-modulo-sistema">📈 Módulo Gerador de Cartazes Profissionais</div>
+        <div class="container-perfil-usuario">
+            <button class="btn-perfil-ativador" onclick="alternarMenuPerfilDropdown()">👤 <span id="labelNomeEmpresaLogada">Minha Empresa</span> ▾</button>
+            <div class="menu-suspenso-perfil" id="dropdownPerfil">
+                <div class="item-menu-perfil" onclick="abrirModalConfig('empresa')">🏢 Dados da Empresa</div>
+                <div class="item-menu-perfil" onclick="abrirModalConfig('filiais')">🌿 Gerenciar Filiais / Usuários</div>
+                <div class="item-menu-perfil separador" onclick="efetuarLogoff()">🚪 Sair do Sistema</div>
             </div>
         </div>
+    </div>
 
-        <div class="conteudo-principal-gerador">
-            <div class="painel-gerador">
-                <h3>🎯 Operação & Campanha</h3>
-                <div class="grupo-input" style="margin-bottom:10px;">
-                    <label>Tipo de Emissão</label>
-                    <select id="tipoSistema" onchange="alternarTipoSistema()">
+    <div class="conteudo-principal-gerador">
+        <div class="painel-gerador">
+            <h3>🎯 Operação & Campanha</h3>
+            <div class="grupo-input" style="margin-bottom:10px;">
+                <label>Tipo de Emissão</label>
+                <select id="tipoSistema" onchange="alternarTipoSistema()">
                     <option value="individual">💥 Cartaz Individual</option>
                     <option value="grade">📰 Encarte / Panfleto de Promoções</option>
-                    </select>
-                </div>
+                </select>
+            </div>
+            <div class="grupo-input" style="margin-bottom:10px;">
+                <label>Nome da Promoção / Tema</label>
+                <input type="text" id="inputNomePromocao" placeholder="Ex: OFERTA ESPECIAL" oninput="this.value=this.value.toUpperCase(); renderizarLayout();">
+            </div>
+            <div class="grupo-input" style="margin-bottom:10px;">
+                <label>Promoção Válida Até</label>
+                <input type="text" id="inputValidadePromocao" placeholder="Ex: VALIDO ATE 31/07/2026" oninput="this.value=this.value.toUpperCase(); renderizarLayout();">
+            </div>
 
-                <div class="grupo-input" style="margin-bottom:10px;">
-                    <label>Nome da Promoção / Tema (Ex: Quinta Verde)</label>
-                    <input type="text" id="inputNomePromocao" placeholder="Ex: OFERTA ESPECIAL" oninput="this.value = this.value.toUpperCase(); renderizarLayout();">
-                </div>
-
-                <div class="grupo-input" style="margin-bottom:10px;">
-                    <label>Promoção Válida Até</label>
-                    <input type="text" id="inputValidadePromocao" placeholder="Ex: VALIDO ATE 31/07/2026" oninput="this.value = this.value.toUpperCase(); renderizarLayout();">
-                </div>
-
-                <h3>🎨 Escolha do Modelo</h3>
-                <div class="grupo-input" id="boxModelosCartaz" style="margin-bottom:10px;">
-                    <label>Estilo do Cartaz</label>
-                    <select id="modeloCartaz" onchange="renderizarLayout()">
+            <h3>🎨 Escolha do Modelo</h3>
+            <div class="grupo-input" id="boxModelosCartaz" style="margin-bottom:10px;">
+                <label>Estilo do Cartaz</label>
+                <select id="modeloCartaz" onchange="renderizarLayout()">
                     <option value="modelo-tradicional">🟡 Vermelho & Amarelo</option>
                     <option value="modelo-clean">⚪ Clean (Fundo Branco)</option>
                     <option value="modelo-premium">⚫ Black & Gold (Premium)</option>
                     <option value="modelo-customizado">🖼️ Usar Fundo Customizado</option>
-                    </select>
-                </div>
-
-                <div class="grupo-input" id="boxModelosEncarte" style="display:none; margin-bottom:10px;">
-                    <label>Layout do Encarte</label>
-                    <select id="modeloEncarte" onchange="renderizarLayout()">
+                </select>
+            </div>
+            <div class="grupo-input" id="boxModelosEncarte" style="display:none; margin-bottom:10px;">
+                <label>Layout do Encarte</label>
+                <select id="modeloEncarte" onchange="renderizarLayout()">
                     <option value="tema-cartas-ofertas">🔥 Tema Asymmetric Premium</option>
                     <option value="grid-modelo-tradicional">🔲 Grade Clássica (3 Colunas)</option>
-                    <option value="modelo-encarte-customizado">🖼️ Modelo Personalizado (Preenchimento)</option>
-                    </select>
-                </div>
+                    <option value="modelo-encarte-customizado">🖼️ Modelo Personalizado</option>
+                </select>
+            </div>
+            <div class="grupo-input" id="boxUploadTemplate" style="display:none; margin-bottom:10px;">
+                <label>Carregar Arte de Fundo</label>
+                <input type="file" id="inputFundoCustom" accept="image/*" onchange="carregarImagemTemplate(this)">
+            </div>
+            <div class="grupo-input" id="boxUploadLogoEncarte" style="display:none; margin-bottom:10px;">
+                <label>Logomarca do Encarte</label>
+                <input type="file" id="inputLogoEncarte" accept="image/*" onchange="carregarLogoEncarte(this)">
+            </div>
 
-                <div class="grupo-input" id="boxUploadTemplate" style="display:none; margin-bottom:10px;">
-                    <label>Carregar Arte de Fundo</label>
-                    <input type="file" id="inputFundoCustom" accept="image/*" onchange="carregarImagemTemplate(this)">
-                </div>
-
-                <div class="grupo-input" id="boxUploadLogoEncarte" style="display:none; margin-bottom:10px;">
-                    <label>Logomarca do Encarte</label>
-                    <input type="file" id="inputLogoEncarte" accept="image/*" onchange="carregarLogoEncarte(this)">
-                </div>
-
-                <h3>📐 Configuração da Folha</h3>
-                <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <div class="grupo-input" style="flex: 2;">
-                    <label>Tamanho</label>
+            <h3>📐 Configuração da Folha</h3>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <div class="grupo-input" style="flex:2;"><label>Tamanho</label>
                     <select id="dimensaoFolha" onchange="renderizarLayout()">
-                    <option value="A4">Folha Inteira (A4)</option>
-                    <option value="A5">Meia Folha (A5)</option>
-                    <option value="A6">1/4 de Folha (A6)</option>
+                        <option value="A4">Folha Inteira (A4)</option>
+                        <option value="A5">Meia Folha (A5)</option>
+                        <option value="A6">1/4 de Folha (A6)</option>
                     </select>
-                    </div>
-                    <div class="grupo-input" style="flex: 1;">
-                    <label>Cópias</label>
-                    <input type="number" id="numCopias" value="1" min="1" oninput="renderizarLayout()">
-                    </div>
                 </div>
+                <div class="grupo-input" style="flex:1;"><label>Cópias</label><input type="number" id="numCopias" value="1" min="1" oninput="renderizarLayout()"></div>
+            </div>
 
-                <h3>📐 Escala dos Textos e Imagens</h3>
-                <div class="grupo-input">Nome <input type="range" id="sliderProduto" min="20" max="140" value="65" oninput="renderizarLayout()"></div>
-                <div class="grupo-input">Preço <input type="range" id="sliderPreco" min="80" max="350" value="200" oninput="renderizarLayout()"></div>
-                <div class="grupo-input">Centavos <input type="range" id="sliderCentavos" min="20" max="180" value="80" oninput="renderizarLayout()"></div>
-                <div class="grupo-input">Texto Validade <input type="range" id="sliderValidade" min="10" max="40" value="14" oninput="renderizarLayout()"></div>
-                <div class="grupo-input" id="boxSliderImagemDestaque" style="display: none;">Tamanho Imagem Destaque <input type="range" id="sliderImagemDestaque" min="50" max="150" value="100" oninput="renderizarLayout()"></div>
-                <div class="grupo-input">Margem Baixo <input type="range" id="sliderDistancia" min="0" max="150" value="40" oninput="renderizarLayout()"></div>
+            <h3>📐 Escala dos Textos e Imagens</h3>
+            <div class="grupo-input">Nome <input type="range" id="sliderProduto" min="20" max="140" value="65" oninput="renderizarLayout()"></div>
+            <div class="grupo-input">Preço <input type="range" id="sliderPreco" min="80" max="350" value="200" oninput="renderizarLayout()"></div>
+            <div class="grupo-input">Centavos <input type="range" id="sliderCentavos" min="20" max="180" value="80" oninput="renderizarLayout()"></div>
+            <div class="grupo-input">Texto Validade <input type="range" id="sliderValidade" min="10" max="40" value="14" oninput="renderizarLayout()"></div>
+            <div class="grupo-input" id="boxSliderImagemDestaque" style="display:none;">Tamanho Imagem Destaque <input type="range" id="sliderImagemDestaque" min="50" max="150" value="100" oninput="renderizarLayout()"></div>
+            <div class="grupo-input">Margem Baixo <input type="range" id="sliderDistancia" min="0" max="150" value="40" oninput="renderizarLayout()"></div>
 
-                <h3 style="margin-top:15px;">📦 Produto</h3>
-                <div class="grupo-input"><label>Nome</label><input type="text" id="inputProduto" placeholder="Ex: ARROZ INTEGRAL 1KG" oninput="this.value = this.value.toUpperCase()"></div>
-                <div style="display: flex; gap: 10px; margin-top:5px;">
-                    <div class="grupo-input" style="flex: 2;"><label>Preço ("Por")</label><input type="text" id="inputPrecoPor" placeholder="0,00" oninput="mascaraMoeda(this)"></div>
-                    <div class="grupo-input" style="flex: 1;"><label>Unidade</label><input type="text" id="inputUnidade" value="UNID"></div>
-                </div>
-                <div class="grupo-input" id="boxFotoEncarte" style="display:none; margin-top:5px;"><label>Foto Item</label><input type="file" id="inputFotoProduto" accept="image/*"></div>
+            <h3 style="margin-top:15px;">📦 Produto</h3>
+            <div class="grupo-input"><label>Nome</label><input type="text" id="inputProduto" placeholder="Ex: ARROZ INTEGRAL 1KG" oninput="this.value=this.value.toUpperCase()"></div>
+            <div style="display:flex; gap:10px; margin-top:5px;">
+                <div class="grupo-input" style="flex:2;"><label>Preço ("Por")</label><input type="text" id="inputPrecoPor" placeholder="0,00" oninput="mascaraMoeda(this)"></div>
+                <div class="grupo-input" style="flex:1;"><label>Unidade</label><input type="text" id="inputUnidade" value="UNID"></div>
+            </div>
+            <div class="grupo-input" id="boxFotoEncarte" style="display:none; margin-top:5px;"><label>Foto Item</label><input type="file" id="inputFotoProduto" accept="image/*"></div>
 
-                <div class="botoes-acoes" style="margin-top:15px; display: flex; flex-direction: column; gap: 8px;">
-                    <div style="display: flex; gap: 8px;">
+            <div class="botoes-acoes" style="margin-top:15px; display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; gap:8px;">
                     <button class="acao btn-add" onclick="adicionarItem()">➕ Incluir Item</button>
                     <button class="acao btn-clear" onclick="limparCampanha()">🗑️ Limpar Tudo</button>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
+                </div>
+                <div style="display:flex; gap:8px;">
                     <button class="acao btn-print" onclick="window.print()">🖨️ Imprimir</button>
-                    <button class="acao btn-whatsapp" id="btnCompartilharWhats" style="display: none;" onclick="compartilharNoWhatsApp()">🟢 Enviar WhatsApp</button>
-                    </div>
-                    <button class="acao btn-save" onclick="salvarCampanhaAtual()">💾 Salvar Campanha</button>
+                    <button class="acao btn-whatsapp" id="btnCompartilharWhats" style="display:none;" onclick="compartilharNoWhatsApp()">🟢 WhatsApp</button>
                 </div>
-
-                <div class="container-tabela" style="margin-top:10px;">
-                    <table>
-                    <thead><tr><th>Item</th><th>Valor</th><th></th></tr></thead>
-                    <tbody id="corpoTabela"></tbody>
-                    </table>
-                </div>
+                <button class="acao btn-save" onclick="salvarCampanha()">💾 Salvar Campanha na Nuvem</button>
             </div>
 
-            <div class="preview-container" id="previewContainer"></div>
-        </div>
-    </div>
-
-    <!-- MODAL DADOS DA EMPRESA -->
-    <div class="modal-config-fundo" id="modalDadosEmpresa">
-        <div class="conteudo-modal-config">
-            <h2>🏢 Configurações Corporativas da Matriz</h2>
-            <div class="grupo-input" style="margin-bottom: 12px;">
-                <label>CNPJ da Empresa</label>
-                <input type="text" id="empresaCNPJ" placeholder="00.000.000/0001-00">
-            </div>
-            <div class="grupo-input" style="margin-bottom: 12px;">
-                <label>Telefone / WhatsApp Comercial</label>
-                <input type="text" id="empresaTelefone" placeholder="(00) 0000-0000">
-            </div>
-            <div class="grupo-input" style="margin-bottom: 12px;">
-                <label>Endereço Completo</label>
-                <input type="text" id="empresaEndereco" placeholder="Av. Principal, 123 - Centro">
-            </div>
-            <div class="botoes-alinhados-modal">
-                <button class="btn btn-alternar" onclick="fecharModaisConfig()">Cancelar</button>
-                <button class="btn btn-confirmar" onclick="salvarDadosAdicionaisEmpresa()">Salvar Configurações</button>
+            <div class="container-tabela" style="margin-top:10px;">
+                <table><thead><tr><th>Item</th><th>Valor</th><th></th></tr></thead><tbody id="corpoTabela"></tbody></table>
             </div>
         </div>
+        <div class="preview-container" id="previewContainer"></div>
     </div>
+</div>
 
-    <!-- MODAL GERENCIAR FILIAIS -->
-    <div class="modal-config-fundo" id="modalGerenciarFiliais">
-        <div class="conteudo-modal-config" style="width: 550px;">
-            <h2>🌿 Filiais e Usuários de Acesso Secundários</h2>
-            <div style="background: #f9f9f9; padding: 12px; border: 1px solid #ddd; margin-bottom: 15px; border-radius: 4px;">
-                <h4 style="margin: 0 0 10px 0; font-size: 13px; color: #333;">Adicionar Nova Filial/Acesso</h4>
-                <div class="grupo-input" style="margin-bottom: 8px;">
-                    <label>Identificação</label>
-                    <input type="text" id="filialNome" placeholder="Ex: Mercado MS - Filial 02">
-                </div>
-                <div style="display:flex; gap:10px;">
-                    <div class="grupo-input" style="flex:1;">
-                    <label>Usuário de Login</label>
-                    <input type="text" id="filialUser" placeholder="Ex: filial02">
-                    </div>
-                    <div class="grupo-input" style="flex:1;">
-                    <label>Senha</label>
-                    <input type="password" id="filialSenha" placeholder="Senha">
-                    </div>
-                </div>
-                <button class="btn btn-confirmar" style="width:100%; margin-top:10px; height: 30px;" onclick="adicionarFilialUsuario()">Criar Acesso de Filial</button>
-            </div>
-            <h4 style="margin: 10px 0 5px 0; font-size: 13px;">Acessos Ativos no Sistema:</h4>
-            <div style="max-height: 120px; overflow-y: auto; border: 1px solid #eee; font-size: 12px; padding: 5px;" id="listaAcessosFiliais"></div>
-            <div class="botoes-alinhados-modal">
-                <button class="btn btn-alternar" onclick="fecharModaisConfig()">Fechar Janela</button>
-            </div>
+<div class="modal-config-fundo" id="modalDadosEmpresa">
+    <div class="conteudo-modal-config">
+        <div class="modal-btn-fechar" onclick="fecharModaisConfig()">✕</div>
+        <h2>🏢 Configurações Corporativas da Matriz</h2>
+        <div class="grupo-input" style="margin-bottom:12px;"><label>CNPJ da Empresa</label><input type="text" id="empresaCNPJ" placeholder="00.000.000/0001-00"></div>
+        <div class="grupo-input" style="margin-bottom:12px;"><label>Telefone / WhatsApp Comercial</label><input type="text" id="empresaTelefone" placeholder="(00) 0000-0000"></div>
+        <div class="grupo-input" style="margin-bottom:12px;"><label>Endereço Completo</label><input type="text" id="empresaEndereco" placeholder="Av. Principal, 123 - Centro"></div>
+        <div class="botoes-alinhados-modal">
+            <button class="btn btn-alternar" onclick="fecharModaisConfig()">Cancelar</button>
+            <button class="btn btn-confirmar" onclick="salvarDadosAdicionaisEmpresa()">Salvar Configurações</button>
         </div>
     </div>
+</div>
 
-    <script>
-            const API_BASE_URL = "https://cartaz.delid.com.br/api";
-        let listaItens = [];
-        let imagemFundoCustomizadaData = "";
-        let logomarcaEncarteData = "";
-        let arquivoFundoCustomFile = null;
-        let arquivoLogoEncarteFile = null;
-        let usuarioSessaoAtiva = null;
+<div class="modal-config-fundo" id="modalGerenciarFiliais">
+    <div class="conteudo-modal-config" style="width:550px;">
+        <div class="modal-btn-fechar" onclick="fecharModaisConfig()">✕</div>
+        <h2>🌿 Filiais e Usuários de Acesso Secundários</h2>
+        <div style="background:#f8fafc; padding:12px; border:1px solid #e2e8f0; margin-bottom:15px; border-radius:8px;">
+            <h4 style="margin:0 0 10px 0; font-size:13px; color:#334155;">Adicionar Novo Acesso</h4>
+            <div style="display:flex; gap:10px;">
+                <div class="grupo-input" style="flex:1;"><label>Usuário de Login</label><input type="text" id="filialUser" placeholder="Ex: filial02"></div>
+                <div class="grupo-input" style="flex:1;"><label>Senha (mín. 8)</label><input type="password" id="filialSenha" placeholder="Senha"></div>
+            </div>
+            <button class="btn btn-confirmar" style="width:100%; margin-top:10px; height:34px;" onclick="adicionarFilialUsuario()">Criar Acesso</button>
+        </div>
+        <h4 style="margin:10px 0 5px 0; font-size:13px;">Acessos Ativos no Sistema:</h4>
+        <div style="max-height:150px; overflow-y:auto; border:1px solid #f1f5f9; font-size:12px; padding:5px; border-radius:6px;" id="listaAcessosFiliais"></div>
+        <div class="botoes-alinhados-modal"><button class="btn btn-alternar" onclick="fecharModaisConfig()">Fechar Janela</button></div>
+    </div>
+</div>
 
-        function tokenSalvo() { return localStorage.getItem('delid_token'); }
-        function headersAutenticados(extra = {}) { return { 'Authorization': `Bearer ${tokenSalvo()}`, ...extra }; }
+<script>
+const API_URL = '/api';
+let listaItens = [];
+let produtosCadastrados = [];
+let imagemFundoCustomizadaData = "";
+let logomarcaEncarteData = "";
+let usuarioSessaoAtiva = null;
 
-        function alternarFormularios(tela) {
-            document.getElementById('formLogin').classList.remove('ativo');
-            document.getElementById('formCadastro').classList.remove('ativo');
-            if (tela === 'cadastro') document.getElementById('formCadastro').classList.add('ativo');
-            else document.getElementById('formLogin').classList.add('ativo');
-        }
+async function apiRequest(endpoint, method = 'GET', body = null, isFormData = false) {
+    const opts = { method, credentials: 'include', headers: {} };
+    if (body && !isFormData) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+    else if (body && isFormData) { opts.body = body; }
+    const resp = await fetch(API_URL + endpoint, opts);
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || 'Erro na requisição.');
+    return data;
+}
 
-        async function salvarNovoUsuario() {
-            const nomeEmpresa = document.getElementById('cadNomeEmpresa').value.trim();
-            const usuario = document.getElementById('cadUsuario').value.trim();
-            const senha = document.getElementById('cadSenha').value.trim();
-            if (!nomeEmpresa || !usuario || !senha) { alert("Preencha todos os campos."); return; }
-            try {
-                const resp = await fetch(`${API_BASE_URL}/auth/cadastrar`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nomeEmpresa, usuario, senha })
-                });
-                const dados = await resp.json();
-                if (!resp.ok) { alert(dados.erro || "Erro ao cadastrar."); return; }
-                alert("Cadastro realizado com sucesso!");
-                alternarFormularios('login');
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+function exibirToast(mensagem, tipo = 'info') {
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + (tipo === 'erro' ? 'erro' : tipo === 'sucesso' ? 'sucesso' : '');
+    toast.innerText = mensagem;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+}
 
-        async function executarLogin() {
-            const usuario = document.getElementById('loginUsuario').value.trim();
-            const senha = document.getElementById('loginSenha').value;
-            try {
-                const resp = await fetch(`${API_BASE_URL}/auth/login`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario, senha })
-                });
-                const dados = await resp.json();
-                if (!resp.ok) { alert(dados.erro || "Usuário ou senha incorretos!"); return; }
-                usuarioSessaoAtiva = dados;
-                localStorage.setItem('delid_token', dados.token);
-                document.getElementById('telaLoginContainer').style.display = 'none';
-                document.getElementById('ambienteGerador').style.display = 'flex';
-                document.body.style.backgroundColor = "#eef2f3";
-                document.getElementById('labelNomeEmpresaLogada').innerText = dados.empresa.toUpperCase();
-                await carregarProdutosDoServidor();
-                renderizarLayout();
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+function alternarFormularios(tela) {
+    document.getElementById('formLogin').classList.remove('ativo');
+    document.getElementById('formCadastro').classList.remove('ativo');
+    document.getElementById('erroLogin').innerText = "";
+    document.getElementById('erroCadastro').innerText = "";
+    if (tela === 'cadastro') document.getElementById('formCadastro').classList.add('ativo');
+    else document.getElementById('formLogin').classList.add('ativo');
+}
 
-        function efetuarLogoff() {
-            usuarioSessaoAtiva = null;
-            localStorage.removeItem('delid_token');
-            listaItens = [];
-            document.getElementById('ambienteGerador').style.display = 'none';
-            document.getElementById('telaLoginContainer').style.display = 'flex';
-            document.body.style.backgroundColor = "#5555";
-        }
+async function salvarNovoUsuario() {
+    const empresa = document.getElementById('cadNomeEmpresa').value.trim();
+    const username = document.getElementById('cadUsuario').value.trim();
+    const password = document.getElementById('cadSenha').value.trim();
+    const erroDiv = document.getElementById('erroCadastro');
+    erroDiv.innerText = "";
+    if (!empresa || !username || !password) { erroDiv.innerText = "Preencha todos os campos."; return; }
+    try {
+        const data = await apiRequest('/auth/register', 'POST', { empresa, username, password });
+        exibirToast('Cadastro realizado com sucesso!', 'sucesso');
+        iniciarSessao(data.usuario);
+    } catch (e) { erroDiv.innerText = e.message; }
+}
 
-        async function carregarProdutosDoServidor() {
-            try {
-                const resp = await fetch(`${API_BASE_URL}/produtos`, { headers: headersAutenticados() });
-                if (!resp.ok) { if (resp.status === 401) efetuarLogoff(); return; }
-                const dados = await resp.json();
-                listaItens = dados.map(p => ({
-                    id: p.id, nome: p.nome, precoPor: Number(p.preco).toFixed(2).replace('.', ','),
-                    unidade: p.unidade, foto: p.foto_url ? `${API_BASE_URL.replace('/api','')}${p.foto_url}` : ''
-                }));
-            } catch (e) { console.error("Erro ao carregar produtos:", e); }
-        }
+async function executarLogin() {
+    const username = document.getElementById('loginUsuario').value.trim();
+    const password = document.getElementById('loginSenha').value;
+    const erroDiv = document.getElementById('erroLogin');
+    erroDiv.innerText = "";
+    try {
+        const data = await apiRequest('/auth/login', 'POST', { username, password });
+        iniciarSessao(data.usuario);
+    } catch (e) { erroDiv.innerText = e.message; }
+}
 
-        async function adicionarItem() {
-            const nome = document.getElementById('inputProduto').value.toUpperCase();
-            const precoPor = document.getElementById('inputPrecoPor').value;
-            const unidade = document.getElementById('inputUnidade').value.toUpperCase();
-            const arquivoFoto = document.getElementById('inputFotoProduto').files[0];
-            if (!nome || !precoPor) { alert("Preencha nome e preço."); return; }
+function iniciarSessao(usuario) {
+    usuarioSessaoAtiva = usuario;
+    document.getElementById('telaLoginContainer').style.display = 'none';
+    document.getElementById('ambienteGerador').style.display = 'flex';
+    document.body.style.background = "#eef2f7";
+    document.getElementById('labelNomeEmpresaLogada').innerText = usuario.empresa.toUpperCase();
+    carregarProdutosSalvos();
+    renderizarLayout();
+}
 
-            const formData = new FormData();
-            formData.append('nome', nome); formData.append('preco', precoPor); formData.append('unidade', unidade);
-            if (arquivoFoto) formData.append('foto', arquivoFoto);
+async function carregarProdutosSalvos() {
+    try {
+        produtosCadastrados = await apiRequest('/produtos');
+        listaItens = produtosCadastrados.map(p => ({ id: p.id, nome: p.nome, precoPor: p.preco, unidade: p.unidade, foto: p.foto_url || '' }));
+        renderizarLayout();
+    } catch (e) { exibirToast('Não foi possível carregar produtos salvos.', 'erro'); }
+}
 
-            try {
-                const resp = await fetch(`${API_BASE_URL}/produtos`, { method: 'POST', headers: headersAutenticados(), body: formData });
-                if (!resp.ok) { const dados = await resp.json(); alert(dados.erro || "Erro ao incluir item."); return; }
-                document.getElementById('inputProduto').value = "";
-                document.getElementById('inputPrecoPor').value = "";
-                document.getElementById('inputFotoProduto').value = "";
-                await carregarProdutosDoServidor();
-                renderizarLayout();
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+function alternarMenuPerfilDropdown() { document.getElementById('dropdownPerfil').classList.toggle('aberto'); }
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('dropdownPerfil');
+    const btn = document.querySelector('.btn-perfil-ativador');
+    if (dropdown && dropdown.classList.contains('aberto') && !dropdown.contains(e.target) && e.target !== btn) dropdown.classList.remove('aberto');
+});
 
-        async function removerItem(id) {
-            try {
-                const resp = await fetch(`${API_BASE_URL}/produtos/${id}`, { method: 'DELETE', headers: headersAutenticados() });
-                if (!resp.ok) { alert("Erro ao remover item."); return; }
-                await carregarProdutosDoServidor();
-                renderizarLayout();
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+async function abrirModalConfig(tipo) {
+    fecharModaisConfig();
+    if (tipo === 'empresa') {
+        try {
+            const dados = await apiRequest('/empresas/minha');
+            document.getElementById('empresaCNPJ').value = dados.cnpj || "";
+            document.getElementById('empresaTelefone').value = dados.telefone || "";
+            document.getElementById('empresaEndereco').value = dados.endereco || "";
+            document.getElementById('modalDadosEmpresa').classList.add('aberto');
+        } catch (e) { exibirToast(e.message, 'erro'); }
+    } else if (tipo === 'filiais') {
+        renderizarListaFiliais();
+        document.getElementById('modalGerenciarFiliais').classList.add('aberto');
+    }
+}
+function fecharModaisConfig() {
+    document.getElementById('modalDadosEmpresa').classList.remove('aberto');
+    document.getElementById('modalGerenciarFiliais').classList.remove('aberto');
+}
+// Fecha modal clicando fora ou com ESC
+document.querySelectorAll('.modal-config-fundo').forEach(m => m.addEventListener('click', (e) => { if (e.target === m) fecharModaisConfig(); }));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharModaisConfig(); });
 
-        function limparCampanha() {
-            if (confirm("Tem certeza que deseja apagar todos os cartazes criados?")) {
-                const idsAtuais = listaItens.map(item => item.id);
-                Promise.all(idsAtuais.map(id => fetch(`${API_BASE_URL}/produtos/${id}`, { method: 'DELETE', headers: headersAutenticados() })))
-                    .then(async () => { await carregarProdutosDoServidor(); renderizarLayout(); });
-            }
-        }
+async function salvarDadosAdicionaisEmpresa() {
+    try {
+        await apiRequest('/empresas/minha', 'PUT', {
+            cnpj: document.getElementById('empresaCNPJ').value.trim(),
+            telefone: document.getElementById('empresaTelefone').value.trim(),
+            endereco: document.getElementById('empresaEndereco').value.trim()
+        });
+        exibirToast('Dados atualizados com sucesso.', 'sucesso');
+        fecharModaisConfig();
+    } catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        function carregarImagemTemplate(input) {
-            const arquivo = input.files[0];
-            if (arquivo) {
-                arquivoFundoCustomFile = arquivo;
-                const reader = new FileReader();
-                reader.onload = function(e) { imagemFundoCustomizadaData = e.target.result; renderizarLayout(); };
-                reader.readAsDataURL(arquivo);
-            }
-        }
+async function adicionarFilialUsuario() {
+    const username = document.getElementById('filialUser').value.trim();
+    const password = document.getElementById('filialSenha').value.trim();
+    if (!username || !password) { exibirToast('Preencha usuário e senha.', 'erro'); return; }
+    try {
+        await apiRequest('/empresas/filiais', 'POST', { username, password });
+        exibirToast('Acesso criado com sucesso.', 'sucesso');
+        document.getElementById('filialUser').value = ""; document.getElementById('filialSenha').value = "";
+        renderizarListaFiliais();
+    } catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        function carregarLogoEncarte(input) {
-            const arquivo = input.files[0];
-            if (arquivo) {
-                arquivoLogoEncarteFile = arquivo;
-                const reader = new FileReader();
-                reader.onload = function(e) { logomarcaEncarteData = e.target.result; renderizarLayout(); };
-                reader.readAsDataURL(arquivo);
-            }
-        }
+async function renderizarListaFiliais() {
+    try {
+        const lista = await apiRequest('/empresas/filiais');
+        const listaDiv = document.getElementById('listaAcessosFiliais');
+        listaDiv.innerHTML = "";
+        lista.forEach(u => {
+            listaDiv.innerHTML += `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #f8fafc;">
+                <span>🔑 <b>${u.username}</b> (${u.role})</span>
+                ${u.role !== 'admin_empresa' ? `<button class="btn-deletar" onclick="removerFilial(${u.id})">🗑️</button>` : ''}
+            </div>`;
+        });
+    } catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        async function salvarCampanhaAtual() {
-            const tipo = document.getElementById('tipoSistema').value;
-            const modelo = tipo === 'individual' ? document.getElementById('modeloCartaz').value : document.getElementById('modeloEncarte').value;
-            const configuracoes = {
-                tamProduto: document.getElementById('sliderProduto').value,
-                tamPreco: document.getElementById('sliderPreco').value,
-                tamCentavos: document.getElementById('sliderCentavos').value,
-                tamValidade: document.getElementById('sliderValidade').value,
-                escalaDestaque: document.getElementById('sliderImagemDestaque').value,
-                distPreco: document.getElementById('sliderDistancia').value
-            };
-            const formData = new FormData();
-            formData.append('nome_promocao', document.getElementById('inputNomePromocao').value.trim());
-            formData.append('validade', document.getElementById('inputValidadePromocao').value.trim());
-            formData.append('tipo_emissao', tipo);
-            formData.append('modelo', modelo);
-            formData.append('dimensao_folha', document.getElementById('dimensaoFolha').value);
-            formData.append('configuracoes', JSON.stringify(configuracoes));
-            formData.append('produtoIds', JSON.stringify(listaItens.map(i => i.id)));
-            if (arquivoFundoCustomFile) formData.append('fundo', arquivoFundoCustomFile);
-            if (arquivoLogoEncarteFile) formData.append('logo', arquivoLogoEncarteFile);
+async function removerFilial(id) {
+    if (!confirm('Remover este acesso?')) return;
+    try { await apiRequest('/empresas/filiais/' + id, 'DELETE'); renderizarListaFiliais(); }
+    catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-            try {
-                const resp = await fetch(`${API_BASE_URL}/campanhas`, { method: 'POST', headers: headersAutenticados(), body: formData });
-                const dados = await resp.json();
-                if (!resp.ok) { alert(dados.erro || "Erro ao salvar campanha."); return; }
-                alert("Campanha salva com sucesso!");
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+async function efetuarLogoff() {
+    try { await apiRequest('/auth/logout', 'POST'); } catch (e) {}
+    usuarioSessaoAtiva = null;
+    document.getElementById('ambienteGerador').style.display = 'none';
+    document.getElementById('telaLoginContainer').style.display = 'flex';
+    document.body.style.background = "linear-gradient(135deg,#1e293b,#334155)";
+}
 
-        function compartilharNoWhatsApp() {
-            if (listaItens.length === 0) { alert("Adicione itens para poder compartilhar."); return; }
-            let texto = `*🔥 GRANDES OFERTAS - ${usuarioSessaoAtiva.empresa.toUpperCase()} 🔥*\\n\\n`;
-            listaItens.forEach((item, index) => { texto += `${index + 1}) *${item.nome}* -> R$ ${item.precoPor} (${item.unidade})\\n`; });
-            const urlWhats = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
-            window.open(urlWhats, '_blank');
-        }
+function mascaraMoeda(campo) {
+    let valor = campo.value.replace(/\\D/g, "");
+    if (valor === "") return;
+    valor = (parseInt(valor) / 100).toFixed(2).replace(".", ",");
+    campo.value = valor;
+}
 
-        function mascaraMoeda(campo) {
-            let valor = campo.value.replace(/\\D/g, "");
-            if (valor === "") return;
-            valor = (parseInt(valor) / 100).toFixed(2).replace(".", ",");
-            campo.value = valor;
-        }
+function carregarImagemTemplate(input) {
+    const arquivo = input.files[0];
+    if (arquivo) { const reader = new FileReader(); reader.onload = e => { imagemFundoCustomizadaData = e.target.result; renderizarLayout(); }; reader.readAsDataURL(arquivo); }
+}
+function carregarLogoEncarte(input) {
+    const arquivo = input.files[0];
+    if (arquivo) { const reader = new FileReader(); reader.onload = e => { logomarcaEncarteData = e.target.result; renderizarLayout(); }; reader.readAsDataURL(arquivo); }
+}
 
-        function alternarMenuPerfilDropdown() { document.getElementById('dropdownPerfil').classList.toggle('aberto'); }
+function alternarTipoSistema() {
+    const tipo = document.getElementById('tipoSistema').value;
+    document.getElementById('boxModelosCartaz').style.display = (tipo === 'individual') ? 'flex' : 'none';
+    document.getElementById('boxModelosEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
+    document.getElementById('boxFotoEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
+    document.getElementById('boxUploadTemplate').style.display = (tipo === 'individual') ? 'flex' : 'none';
+    document.getElementById('boxUploadLogoEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
+    document.getElementById('boxSliderImagemDestaque').style.display = (tipo === 'grade') ? 'flex' : 'none';
+    document.getElementById('btnCompartilharWhats').style.display = (tipo === 'grade') ? 'block' : 'none';
+    renderizarLayout();
+}
 
-        async function abrirModalConfig(tipo) {
-            fecharModaisConfig();
-            if (tipo === 'empresa') {
-                try {
-                    const resp = await fetch(`${API_BASE_URL}/empresas`, { headers: headersAutenticados() });
-                    const dados = await resp.json();
-                    document.getElementById('empresaCNPJ').value = dados.cnpj || "";
-                    document.getElementById('empresaTelefone').value = dados.telefone || "";
-                    document.getElementById('empresaEndereco').value = dados.endereco || "";
-                    document.getElementById('modalDadosEmpresa').classList.add('aberto');
-                } catch (e) { alert("Erro ao carregar dados da empresa."); }
-            } else if (tipo === 'filiais') {
-                await renderizarListaFiliais();
-                document.getElementById('modalGerenciarFiliais').classList.add('aberto');
-            }
-        }
+async function adicionarItem() {
+    const nome = document.getElementById('inputProduto').value.toUpperCase();
+    const preco = document.getElementById('inputPrecoPor').value;
+    const unidade = document.getElementById('inputUnidade').value.toUpperCase();
+    const arquivoFoto = document.getElementById('inputFotoProduto').files[0];
+    if (!nome || !preco) { exibirToast('Preencha nome e preço.', 'erro'); return; }
 
-        function fecharModaisConfig() {
-            document.getElementById('modalDadosEmpresa').classList.remove('aberto');
-            document.getElementById('modalGerenciarFiliais').classList.remove('aberto');
-        }
+    const formData = new FormData();
+    formData.append('nome', nome); formData.append('preco', preco); formData.append('unidade', unidade);
+    if (arquivoFoto) formData.append('foto', arquivoFoto);
 
-        async function salvarDadosAdicionaisEmpresa() {
-            const cnpj = document.getElementById('empresaCNPJ').value.trim();
-            const telefone = document.getElementById('empresaTelefone').value.trim();
-            const endereco = document.getElementById('empresaEndereco').value.trim();
-            try {
-                const resp = await fetch(`${API_BASE_URL}/empresas`, {
-                    method: 'PUT', headers: headersAutenticados({ 'Content-Type': 'application/json' }),
-                    body: JSON.stringify({ cnpj, telefone, endereco })
-                });
-                if (!resp.ok) { const dados = await resp.json(); alert(dados.erro || "Erro ao salvar."); return; }
-                alert("Dados atualizados com sucesso!");
-                fecharModaisConfig();
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+    try {
+        const produto = await apiRequest('/produtos', 'POST', formData, true);
+        listaItens.push({ id: produto.id, nome: produto.nome, precoPor: produto.preco, unidade: produto.unidade, foto: produto.foto_url || '' });
+        document.getElementById('inputProduto').value = ""; document.getElementById('inputPrecoPor').value = "";
+        document.getElementById('inputFotoProduto').value = "";
+        renderizarLayout();
+    } catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        async function adicionarFilialUsuario() {
-            const nomeFilial = document.getElementById('filialNome').value.trim();
-            const usuario = document.getElementById('filialUser').value.trim();
-            const senha = document.getElementById('filialSenha').value.trim();
-            if (!nomeFilial || !usuario || !senha) return;
-            try {
-                const resp = await fetch(`${API_BASE_URL}/empresas/filiais`, {
-                    method: 'POST', headers: headersAutenticados({ 'Content-Type': 'application/json' }),
-                    body: JSON.stringify({ nomeFilial, usuario, senha })
-                });
-                const dados = await resp.json();
-                if (!resp.ok) { alert(dados.erro || "Erro ao criar filial."); return; }
-                document.getElementById('filialNome').value = "";
-                document.getElementById('filialUser').value = "";
-                document.getElementById('filialSenha').value = "";
-                await renderizarListaFiliais();
-            } catch (e) { alert("Não foi possível conectar ao servidor."); }
-        }
+async function removerItem(id) {
+    try { await apiRequest('/produtos/' + id, 'DELETE'); listaItens = listaItens.filter(i => i.id !== id); renderizarLayout(); }
+    catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        async function renderizarListaFiliais() {
-            try {
-                const resp = await fetch(`${API_BASE_URL}/empresas/filiais`, { headers: headersAutenticados() });
-                const contas = await resp.json();
-                const listaDiv = document.getElementById('listaAcessosFiliais');
-                listaDiv.innerHTML = "";
-                contas.forEach(c => {
-                    const badge = c.papel === 'admin' ? '👑 Admin' : '🌿 Filial';
-                    const removerBtn = c.papel !== 'admin' ? `<button class="btn-deletar" onclick="removerFilial(${c.id})">🗑️</button>` : '';
-                    listaDiv.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0;">
-                        <span>${badge} <b>${c.nome_exibicao}</b> (<i>${c.login}</i>)</span> ${removerBtn}
-                    </div>`;
-                });
-            } catch (e) { console.error(e); }
-        }
+function limparCampanha() {
+    if (confirm("Tem certeza que deseja apagar todos os cartazes desta visualização?")) { listaItens = []; renderizarLayout(); }
+}
 
-        async function removerFilial(id) {
-            if (!confirm("Remover este acesso?")) return;
-            try {
-                await fetch(`${API_BASE_URL}/empresas/filiais/${id}`, { method: 'DELETE', headers: headersAutenticados() });
-                await renderizarListaFiliais();
-            } catch (e) { alert("Erro ao remover acesso."); }
-        }
+async function salvarCampanha() {
+    if (listaItens.length === 0) { exibirToast('Adicione itens antes de salvar.', 'erro'); return; }
+    const formData = new FormData();
+    formData.append('nome', document.getElementById('inputNomePromocao').value || 'CAMPANHA');
+    formData.append('tipo', document.getElementById('tipoSistema').value);
+    const modelo = document.getElementById('tipoSistema').value === 'individual' ? document.getElementById('modeloCartaz').value : document.getElementById('modeloEncarte').value;
+    formData.append('modelo', modelo);
+    formData.append('validade', document.getElementById('inputValidadePromocao').value || '');
+    formData.append('produtos', JSON.stringify(listaItens.map(i => i.id)));
+    const arqFundo = document.getElementById('inputFundoCustom').files[0];
+    const arqLogo = document.getElementById('inputLogoEncarte').files[0];
+    if (arqFundo) formData.append('fundo', arqFundo);
+    if (arqLogo) formData.append('logo', arqLogo);
 
-        function alternarTipoSistema() {
-            const tipo = document.getElementById('tipoSistema').value;
-            document.getElementById('boxModelosCartaz').style.display = (tipo === 'individual') ? 'flex' : 'none';
-            document.getElementById('boxModelosEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
-            document.getElementById('boxFotoEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
-            document.getElementById('boxUploadTemplate').style.display = (tipo === 'individual') ? 'flex' : 'none';
-            document.getElementById('boxUploadLogoEncarte').style.display = (tipo === 'grade') ? 'flex' : 'none';
-            document.getElementById('boxSliderImagemDestaque').style.display = (tipo === 'grade') ? 'flex' : 'none';
-            document.getElementById('btnCompartilharWhats').style.display = (tipo === 'grade') ? 'block' : 'none';
-            renderizarLayout();
-        }
+    try { await apiRequest('/campanhas', 'POST', formData, true); exibirToast('Campanha salva na nuvem!', 'sucesso'); }
+    catch (e) { exibirToast(e.message, 'erro'); }
+}
 
-        function renderizarLayout() {
-            const tipo = document.getElementById('tipoSistema').value;
-            const dimensao = document.getElementById('dimensaoFolha').value;
-            const copias = parseInt(document.getElementById('numCopias').value) || 1;
-            const modeloCartazEscolhido = document.getElementById('modeloCartaz').value;
-            const modeloEncarteEscolhido = document.getElementById('modeloEncarte').value;
+function compartilharNoWhatsApp() {
+    if (listaItens.length === 0) { exibirToast("Adicione itens para poder compartilhar.", 'erro'); return; }
+    let texto = `*🔥 GRANDES OFERTAS - ${usuarioSessaoAtiva.empresa.toUpperCase()} 🔥*\\n\\n`;
+    listaItens.forEach((item, i) => { texto += `${i + 1}) *${item.nome}* -> R$ ${item.precoPor} (${item.unidade})\\n`; });
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank');
+}
 
-            const promocaoDigitada = document.getElementById('inputNomePromocao').value.trim();
-            const tituloPromocao = promocaoDigitada !== "" ? promocaoDigitada : "OFERTA ESPECIAL";
-            const validadeDigitada = document.getElementById('inputValidadePromocao').value.trim();
+function renderizarLayout() {
+    const tipo = document.getElementById('tipoSistema').value;
+    const dimensao = document.getElementById('dimensaoFolha').value;
+    const copias = parseInt(document.getElementById('numCopias').value) || 1;
+    const modeloCartazEscolhido = document.getElementById('modeloCartaz').value;
+    const modeloEncarteEscolhido = document.getElementById('modeloEncarte').value;
+    const promocaoDigitada = document.getElementById('inputNomePromocao').value.trim();
+    const tituloPromocao = promocaoDigitada !== "" ? promocaoDigitada : "OFERTA ESPECIAL";
+    const validadeDigitada = document.getElementById('inputValidadePromocao').value.trim();
+    const tamProduto = document.getElementById('sliderProduto').value + 'px';
+    const tamPreco = document.getElementById('sliderPreco').value + 'px';
+    const tamCentavos = document.getElementById('sliderCentavos').value + 'px';
+    const tamValidade = document.getElementById('sliderValidade').value + 'px';
+    const distPreco = document.getElementById('sliderDistancia').value + 'px';
+    const escalaDestaque = (parseInt(document.getElementById('sliderImagemDestaque').value) / 100);
+    const container = document.getElementById('previewContainer');
+    const tabela = document.getElementById('corpoTabela');
+    if (!container) return;
+    container.innerHTML = ""; tabela.innerHTML = "";
 
-            const tamProduto = document.getElementById('sliderProduto').value + 'px';
-            const tamPreco = document.getElementById('sliderPreco').value + 'px';
-            const tamCentavos = document.getElementById('sliderCentavos').value + 'px';
-            const tamValidade = document.getElementById('sliderValidade').value + 'px';
-            const distPreco = document.getElementById('sliderDistancia').value + 'px';
-            const escalaDestaque = (parseInt(document.getElementById('sliderImagemDestaque').value) / 100);
-            const sliderPrecoValor = document.getElementById('sliderPreco').value;
+    listaItens.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><b>${item.nome}</b></td><td>R$ ${item.precoPor}</td><td><button class="btn-deletar" onclick="removerItem(${item.id})">🗑️</button></td>`;
+        tabela.appendChild(tr);
+    });
 
-            const container = document.getElementById('previewContainer');
-            const tabela = document.getElementById('corpoTabela');
-            if (!container) return;
-            container.innerHTML = ""; tabela.innerHTML = "";
+    if (listaItens.length === 0) {
+        container.innerHTML = "<p style='color:#666; margin-top:40px; font-weight:bold;'>Sua lista está vazia. Adicione itens acima.</p>";
+        return;
+    }
 
+    let boxLogoHTML = `<strong>${usuarioSessaoAtiva.empresa}</strong>`;
+    if (logomarcaEncarteData !== "") boxLogoHTML = `<img src="${logomarcaEncarteData}" alt="Logo">`;
+
+    let blocoValidadeHTML = "";
+    if (validadeDigitada !== "") blocoValidadeHTML = `<div class="txt-validade-promocao" style="font-size:${tamValidade};">${validadeDigitada}</div>`;
+
+    for (let c = 0; c < copias; c++) {
+        if (tipo === 'individual') {
             listaItens.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td><b>${item.nome}</b></td><td>R$ ${item.precoPor}</td><td><button class="btn-deletar" onclick="removerItem(${item.id})">🗑️</button></td>`;
-                tabela.appendChild(tr);
-            });
-
-            if (listaItens.length === 0) {
-                container.innerHTML = "<p style='color:#666; margin-top:40px; font-weight:bold;'>Sua lista está vazia. Adicione itens acima.</p>";
-                return;
-            }
-
-            let boxLogoHTML = `<strong>${usuarioSessaoAtiva.empresa}</strong>`;
-            if (logomarcaEncarteData !== "") boxLogoHTML = `<img src="${logomarcaEncarteData}" alt="Logo">`;
-
-            let blocoValidadeHTML = "";
-            if (validadeDigitada !== "") blocoValidadeHTML = `<div class="txt-validade-promocao" style="font-size: ${tamValidade};">${validadeDigitada}</div>`;
-
-            for (let c = 0; c < copias; c++) {
-                if (tipo === 'individual') {
-                    listaItens.forEach(item => {
-                        const cartaz = document.createElement('div');
-                        cartaz.className = `cartaz-individual dimensao-${dimensao} ${modeloCartazEscolhido}`;
-                        if (modeloCartazEscolhido === 'modelo-customizado' && imagemFundoCustomizadaData !== "") {
-                            cartaz.style.backgroundImage = `url('${imagemFundoCustomizadaData}')`;
-                        }
-                        let partesPreco = item.precoPor.split(',');
-                        let reais = partesPreco[0];
-                        let centavos = partesPreco[1] || '00';
-
-                        cartaz.innerHTML = `
-                        <div class="topo-simulado">${tituloPromocao}</div>
-                        <div class="nome-produto" style="font-size: ${tamProduto};">${item.nome}</div>
-                        <div class="container-inferior-bloco" style="margin-bottom: ${distPreco};">
+                const cartaz = document.createElement('div');
+                cartaz.className = `cartaz-individual dimensao-${dimensao} ${modeloCartazEscolhido}`;
+                if (modeloCartazEscolhido === 'modelo-customizado' && imagemFundoCustomizadaData !== "") cartaz.style.backgroundImage = `url('${imagemFundoCustomizadaData}')`;
+                let partesPreco = String(item.precoPor).split(',');
+                let reais = partesPreco[0]; let centavos = partesPreco[1] || '00';
+                cartaz.innerHTML = `
+                    <div class="topo-simulado">${tituloPromocao}</div>
+                    <div class="nome-produto" style="font-size:${tamProduto};">${item.nome}</div>
+                    <div class="container-inferior-bloco" style="margin-bottom:${distPreco};">
                         <div class="area-preco-container">
-                        <span class="cifrao" style="font-size: calc(${sliderPrecoValor}px * 0.22);">R$</span>
-                        <div class="bloco-preco">
-                        <span class="preco-reais" style="font-size: ${tamPreco};">${reais}</span>
-                        <span class="preco-centavos" style="font-size: ${tamCentavos};">,${centavos}</span>
+                            <span class="cifrao" style="font-size:calc(${document.getElementById('sliderPreco').value}px * 0.22);">R$</span>
+                            <div class="bloco-preco">
+                                <span class="preco-reais" style="font-size:${tamPreco};">${reais}</span>
+                                <span class="preco-centavos" style="font-size:${tamCentavos};">,${centavos}</span>
+                            </div>
                         </div>
-                        </div>
-                        <div class="unidade-medida" style="font-size: calc(${sliderPrecoValor}px * 0.18);">${item.unidade || 'UND'}</div>
-                        </div>
-                        <div class="container-rodape-etiqueta">
-                        ${blocoValidadeHTML}
-                        <div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div>
-                        </div>
-                        `;
-                        container.appendChild(cartaz);
-                    });
-                } else if (tipo === 'grade') {
-                    const encarte = document.createElement('div');
-                    encarte.className = `encarte-base dimensao-${dimensao}`;
-
-                    if (modeloEncarteEscolhido === 'tema-cartas-ofertas') {
-                        let itemDestaque = listaItens[0];
-                        let itensRestantes = listaItens.slice(1);
-                        let htmlItensGrade = '';
-
-                        for (let i = 0; i < 9; i++) {
-                            let itemGrade = itensRestantes[i];
-                            if (itemGrade) {
-                                htmlItensGrade += `
-                                <div class="card-produto-tema">
-                                <div class="prod-nome">${itemGrade.nome}</div>
-                                <img src="${itemGrade.foto || 'https://via.placeholder.com/100'}" alt="Item">
-                                <div class="etiqueta-preco-container"><div class="val-real">R$ ${itemGrade.precoPor}</div></div>
-                                </div>
-                                `;
-                            } else {
-                                htmlItensGrade += `
-                                <div class="card-produto-tema" style="opacity:0.25;">
-                                <div class="prod-nome">Disponível</div>
-                                <div style="height:65px; display:flex; align-items:center; justify-content:center; color:#aaa;">+</div>
-                                <div class="etiqueta-preco-container"><div class="val-real">R$ --,--</div></div>
-                                </div>
-                                `;
-                            }
-                        }
-
-                        encarte.innerHTML = `
-                        <div class="encarte-header-tema">
-                        <div class="titulo-ofertas"><h1>${tituloPromocao}</h1><span>DA SEMANA</span></div>
-                        <div class="box-logo-mockup">${boxLogoHTML}</div>
-                        </div>
-                        <div class="grid-container-tema">
-                        <div class="coluna-destaque-unica">
-                        <div class="destaque-nome">${itemDestaque.nome}</div>
-                        <img src="${itemDestaque.foto || 'https://via.placeholder.com/200'}" style="transform: scale(${escalaDestaque});" alt="Destaque">
-                        <div class="etiqueta-preco-container"><div class="val-real">R$ ${itemDestaque.precoPor}</div></div>
-                        </div>
+                        <div class="unidade-medida" style="font-size:calc(${document.getElementById('sliderPreco').value}px * 0.18);">${item.unidade || 'UND'}</div>
+                    </div>
+                    <div class="container-rodape-etiqueta">${blocoValidadeHTML}<div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div></div>`;
+                container.appendChild(cartaz);
+            });
+        } else if (tipo === 'grade') {
+            const encarte = document.createElement('div');
+            encarte.className = `encarte-base dimensao-${dimensao}`;
+            if (modeloEncarteEscolhido === 'tema-cartas-ofertas') {
+                let itemDestaque = listaItens[0]; let itensRestantes = listaItens.slice(1); let htmlItensGrade = '';
+                for (let i = 0; i < 9; i++) {
+                    let itemGrade = itensRestantes[i];
+                    htmlItensGrade += itemGrade ? `
+                        <div class="card-produto-tema"><div class="prod-nome">${itemGrade.nome}</div>
+                        <img src="${itemGrade.foto || ''}" alt="Item">
+                        <div class="etiqueta-preco-container"><div class="val-real">R$ ${itemGrade.precoPor}</div></div></div>` : `
+                        <div class="card-produto-tema" style="opacity:.25;"><div class="prod-nome">Disponível</div>
+                        <div style="height:65px; display:flex; align-items:center; justify-content:center; color:#aaa;">+</div>
+                        <div class="etiqueta-preco-container"><div class="val-real">R$ --,--</div></div></div>`;
+                }
+                encarte.innerHTML = `
+                    <div class="encarte-header-tema"><div class="titulo-ofertas"><h1>${tituloPromocao}</h1><span>DA SEMANA</span></div><div class="box-logo-mockup">${boxLogoHTML}</div></div>
+                    <div class="grid-container-tema">
+                        <div class="coluna-destaque-unica"><div class="destaque-nome">${itemDestaque.nome}</div>
+                        <img src="${itemDestaque.foto || ''}" style="transform:scale(${escalaDestaque});" alt="Destaque">
+                        <div class="etiqueta-preco-container"><div class="val-real">R$ ${itemDestaque.precoPor}</div></div></div>
                         <div class="grade-secundaria-itens">${htmlItensGrade}</div>
-                        </div>
-                        <div class="container-rodape-etiqueta" style="position: relative; margin-top: -22px; background: #111 !important; padding: 3px 0; border-top: 1px solid #333;">
-                        ${blocoValidadeHTML.replace("color: #0000;", "color: #fff;")}
-                        <div class="rodape-tecnico-delid" style="color: rgba(255,255,255,0.4);">Delid tecnologia ltda - v2.0.0</div>
-                        </div>
-                        `;
-                    } else if (modeloEncarteEscolhido === 'grid-modelo-tradicional') {
-                        encarte.innerHTML = `
-                        <div class="encarte-header-tema" style="background:#d32f2f; height: 95px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+                    </div>
+                    <div class="container-rodape-etiqueta" style="position:relative; margin-top:-22px; background:#111 !important; padding:3px 0; border-top:1px solid #333;">
+                        ${blocoValidadeHTML.replace('color: #000;', 'color:#fff;')}
+                        <div class="rodape-tecnico-delid" style="color:rgba(255,255,255,.4);">Delid tecnologia ltda - v2.0.0</div>
+                    </div>`;
+            } else if (modeloEncarteEscolhido === 'grid-modelo-tradicional') {
+                encarte.innerHTML = `
+                    <div class="encarte-header-tema" style="background:#d32f2f; height:95px; display:flex; justify-content:space-between; align-items:center; padding:0 20px;">
                         <h1 style="color:#fff; margin:0; font-size:24px; font-family:'Arial Black',sans-serif;">${tituloPromocao}</h1>
                         <div class="box-logo-mockup" style="border-color:#fff;">${boxLogoHTML}</div>
-                        </div>
-                        <div class="grid-modelo-tradicional" style="padding:15px; background:#fff; flex: 1;" id="gridClassico_${c}"></div>
-                        <div class="container-rodape-etiqueta" style="position: relative; background: #fff !important; padding: 5px 0;">
-                        ${blocoValidadeHTML}
-                        <div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div>
-                        </div>
-                        `;
-                        setTimeout(() => {
-                            const containerGrid = document.getElementById(`gridClassico_${c}`);
-                            if (containerGrid) {
-                                listaItens.forEach(item => {
-                                    containerGrid.innerHTML += `
-                                    <div style="border:1px solid #ddd; padding:10px; text-align:center; background:#fff;">
-                                    <div style="font-weight:bold; font-size:12px; min-height:34px; text-transform:uppercase;">${item.nome}</div>
-                                    ${item.foto ? `<img src="${item.foto}" style="max-height:60px; object-fit:contain; margin:5px 0;">` : '<div style="height:10px;"></div>'}
-                                    <div style="color:#d32f2f; font-weight:900; font-size:18px;">R$ ${item.precoPor}</div>
-                                    </div>
-                                    `;
-                                });
-                            }
-                        }, 50);
-                    } else if (modeloEncarteEscolhido === 'modelo-encarte-customizado') {
-                        encarte.innerHTML = `
-                        <div style="width:100%; height:100%; background:#ffff; padding:20px; display:flex; flex-direction:column; justify-content:center; align-items:center; border: 4px dashed #777; flex: 1;">
+                    </div>
+                    <div class="grid-modelo-tradicional" style="padding:15px; background:#fff; flex:1;" id="gridClassico_${c}"></div>
+                    <div class="container-rodape-etiqueta" style="position:relative; background:#fff !important; padding:5px 0;">${blocoValidadeHTML}<div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div></div>`;
+                setTimeout(() => {
+                    const g = document.getElementById(`gridClassico_${c}`);
+                    if (g) listaItens.forEach(item => {
+                        g.innerHTML += `<div style="border:1px solid #ddd; padding:10px; text-align:center; background:#fff;">
+                            <div style="font-weight:bold; font-size:12px; min-height:34px; text-transform:uppercase;">${item.nome}</div>
+                            ${item.foto ? `<img src="${item.foto}" style="max-height:60px; object-fit:contain; margin:5px 0;">` : '<div style="height:10px;"></div>'}
+                            <div style="color:#d32f2f; font-weight:900; font-size:18px;">R$ ${item.precoPor}</div></div>`;
+                    });
+                }, 50);
+            } else if (modeloEncarteEscolhido === 'modelo-encarte-customizado') {
+                encarte.innerHTML = `
+                    <div style="width:100%; height:100%; background:#fff; padding:20px; display:flex; flex-direction:column; justify-content:center; align-items:center; border:4px dashed #777; flex:1;">
                         <h2 style="margin:0; font-family:'Arial Black', sans-serif; color:#333; text-align:center;">${tituloPromocao}</h2>
                         <p style="font-size:14px; text-align:center; color:#666; max-width:80%;">Espaço reservado para simular o modelo próprio.</p>
-                        </div>
-                        <div class="container-rodape-etiqueta" style="position: relative; background: #fff !important; padding: 5px 0;">
-                        ${blocoValidadeHTML}
-                        <div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div>
-                        </div>
-                        `;
-                    }
-                    container.appendChild(encarte);
-                }
+                    </div>
+                    <div class="container-rodape-etiqueta" style="position:relative; background:#fff !important; padding:5px 0;">${blocoValidadeHTML}<div class="rodape-tecnico-delid">Delid tecnologia ltda - v2.0.0</div></div>`;
             }
+            container.appendChild(encarte);
         }
+    }
+}
 
-        window.onload = async function() {
-            const token = tokenSalvo();
-            if (token) {
-                try {
-                    const resp = await fetch(`${API_BASE_URL}/produtos`, { headers: headersAutenticados() });
-                    if (resp.ok) {
-                        document.getElementById('telaLoginContainer').style.display = 'none';
-                        document.getElementById('ambienteGerador').style.display = 'flex';
-                        document.body.style.backgroundColor = "#eef2f3";
-                        await carregarProdutosDoServidor();
-                        renderizarLayout();
-                    } else {
-                        localStorage.removeItem('delid_token');
-                    }
-                } catch (e) { /* backend offline: mantém tela de login */ }
-            }
-        };
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                if (document.getElementById('formLogin').classList.contains('ativo')) executarLogin();
-            }
-        });
-    </script>
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('formLogin').classList.contains('ativo')) executarLogin();
+});
+</script>
 </body>
 </html>
