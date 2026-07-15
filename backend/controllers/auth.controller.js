@@ -86,3 +86,22 @@ exports.me = async (req, res, next) => {
     res.json(result.rows[0]);
   } catch (err) { next(err); }
 };
+
+// Usuário logado troca a própria senha (exige senha atual)
+exports.alterarMinhaSenha = async (req, res, next) => {
+  try {
+    const { senhaAtual, novaSenha } = req.body;
+    if (!novaSenha || novaSenha.length < 8) {
+      return res.status(400).json({ error: 'Nova senha deve ter no mínimo 8 caracteres.' });
+    }
+    const result = await pool.query('SELECT senha_hash FROM usuarios WHERE id = $1', [req.usuario.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const ok = await bcrypt.compare(senhaAtual, result.rows[0].senha_hash);
+    if (!ok) return res.status(401).json({ error: 'Senha atual incorreta.' });
+
+    const hash = await bcrypt.hash(novaSenha, 12);
+    await pool.query('UPDATE usuarios SET senha_hash = $1 WHERE id = $2', [hash, req.usuario.id]);
+    res.json({ message: 'Senha alterada com sucesso.' });
+  } catch (err) { next(err); }
+};

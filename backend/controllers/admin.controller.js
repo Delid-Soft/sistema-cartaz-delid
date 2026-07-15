@@ -89,3 +89,18 @@ exports.alterarStatusUsuario = async (req, res, next) => {
     res.json({ message: 'Status do usuário atualizado.' });
   } catch (err) { next(err); }
 };
+
+// Redefinir senha de qualquer usuário (uso do super admin)
+exports.resetarSenhaUsuario = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { novaSenha } = req.body;
+    if (!novaSenha || novaSenha.length < 8) {
+      return res.status(400).json({ error: 'Senha deve ter no mínimo 8 caracteres.' });
+    }
+    const hash = await bcrypt.hash(novaSenha, 12);
+    const result = await pool.query('UPDATE usuarios SET senha_hash = $1 WHERE id = $2 RETURNING id, username', [hash, id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Usuário não encontrado.' });
+    res.json({ message: `Senha de ${result.rows[0].username} redefinida com sucesso.` });
+  } catch (err) { next(err); }
+};

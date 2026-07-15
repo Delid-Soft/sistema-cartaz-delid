@@ -13,6 +13,7 @@ router.put('/empresas/:id/status', ctrl.alterarStatusEmpresa);
 router.put('/empresas/:id/plano', ctrl.alterarPlanoEmpresa);
 router.delete('/empresas/:id', ctrl.removerEmpresa);
 router.put('/usuarios/:id/status', ctrl.alterarStatusUsuario);
+router.put('/usuarios/:id/senha', ctrl.resetarSenhaUsuario);
 router.post('/super-admin', ctrl.criarSuperAdmin);
 
 module.exports = router;
